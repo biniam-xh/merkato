@@ -10,6 +10,14 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Order_Id")
     private long id;
+    private double totalPrice;
+    private double discount;
     private String orderStatus;
-    private Cart cart;
+    @ManyToOne
+    @JoinColumn(name="User_ID")
+    private User buyer;
+    @OneToMany
+    @JoinColumn(name="Product_ID")
+    private List<Product> productList = new ArrayList<>();
+
 }

@@ -1,11 +1,7 @@
 package edu.mum.mercato.domain;
 
-import org.graalvm.compiler.lir.LIRInstruction;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Coupon {
@@ -13,6 +9,8 @@ public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @OneToOne
+    @JoinColumn(name = "User_Id")
     private User buyer;
     private int point;
 }
