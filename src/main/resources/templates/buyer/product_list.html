@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head th:replace="~header_includes :: head">
+<head th:replace="buyer/partial/header_includes :: head">
 
 </head>
 <body>
-    <div th:replace="~{footer :: footer}">
+    <header th:replace="buyer/partial/header :: navbar-default">
+    </header>
 
+
+
+
+
+    <div th:replace="shared/footer :: footer">
     </div>
 
 </body>

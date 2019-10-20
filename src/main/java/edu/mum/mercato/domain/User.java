@@ -19,5 +19,5 @@ public class User {
     @Column(name = "Password")
     private String password;
     @OneToMany
-    private List<User> follow = new ArrayList<>();
+    private List<User> followers = new ArrayList<>();
 }

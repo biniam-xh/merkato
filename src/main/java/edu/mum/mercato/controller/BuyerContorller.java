@@ -8,6 +8,6 @@ public class BuyerContorller {
 
     @GetMapping("/products")
     public String productListing(){
-        return "product_list";
+        return "buyer/product_list";
     }
 }
