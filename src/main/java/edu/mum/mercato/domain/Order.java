@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "Product_Orders")
+// Order is a service name in sql, it will result in an error
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

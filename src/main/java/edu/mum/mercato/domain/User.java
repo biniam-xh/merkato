@@ -20,4 +20,5 @@ public class User {
     private String password;
     @OneToMany
     private List<User> followers = new ArrayList<>();
+
 }
