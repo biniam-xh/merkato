@@ -18,6 +18,6 @@ public class User {
     private String email;
     @Column(name = "Password")
     private String password;
-    @OneToMany(mappedBy = "user")
+    @OneToMany
     private List<User> follow = new ArrayList<>();
 }
