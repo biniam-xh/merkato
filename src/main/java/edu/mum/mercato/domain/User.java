@@ -30,5 +30,9 @@ public class User {
     @Column(name = "Role")
     private String role;
     @OneToMany
-    private List<User> follow = new ArrayList<>();
+    private List<User> followers = new ArrayList<>();
+
+    public long getId() {
+        return id;
+    }
 }
