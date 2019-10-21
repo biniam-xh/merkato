@@ -1,13 +1,11 @@
 package edu.mum.mercato.controller;
 
+import edu.mum.mercato.domain.Product;
 import edu.mum.mercato.domain.User;
 import edu.mum.mercato.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -21,5 +19,11 @@ public class UserController {
     public @ResponseBody User addUser(@Valid @RequestBody User user){
             userService.saveUser(user);
         return user;
+    }
+
+    @RequestMapping(value = "/seller", method = RequestMethod.GET)
+    public String displaySellerPanel(@ModelAttribute("product") Product product){
+
+        return "/seller/seller";
     }
 }

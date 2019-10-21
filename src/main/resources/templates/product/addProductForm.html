@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}" type="text/css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" th:src="@{js/product.js}" src="js/registration.js"></script>
+</head>
+<body>
+
+<div th:fragment="addProductForm" class="container">
+    <div id="success" style="display:none"></div>
+    <div id="errors" style="display:none"></div>
+
+    <form action="#" method="post" id="productForm" style="border:1px solid #ccc">
+        <div class="container">
+            <h1>Add Product</h1>
+
+            <label for="firstName"><b>Product Name</b></label>
+            <input type="text" placeholder="Enter Product Name" name="title" id="firstName" required>
+
+
+
+
+<!--            <label for="firstName"><b>First Name</b></label>-->
+<!--            <input type="text" id="firstName" placeholder="Enter First Name" name="firstName" required>-->
+
+<!--            <label for="lastName"><b>First Name</b></label>-->
+<!--            <input type="text" id="lastName" placeholder="Enter Last Name" name="lastName" required>-->
+
+<!--            <label for="email"><b>Email</b></label>-->
+<!--            <input type="text" id="email" placeholder="Enter Email" name="email" required>-->
+
+<!--            <label for="psw"><b>Password</b></label>-->
+<!--            <input type="password" id="psw" placeholder="Enter Password" name="password" required>-->
+
+<!--            <label><b>Register As:</b>-->
+<!--                <input type="radio" name="role" value="seller" style="margin-bottom:15px"> Seller-->
+<!--                <input type="radio" name="role" value="buyer" style="margin-bottom:15px"> Buyer-->
+<!--            </label>-->
+
+
+            <div class="clearfix">
+                <input type="button" value="Add" onclick="saveProductData();" class="signupbtn">
+            </div>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>
