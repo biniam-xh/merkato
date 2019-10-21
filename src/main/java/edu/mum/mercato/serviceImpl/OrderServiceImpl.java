@@ -25,18 +25,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order addToCart(List<ProductItem> productsItems, User buyer ) {
-        Optional<Order> order = this.orderRepository.findFirstByBuyer_Id(buyer.getId());
-        if(order.isPresent()){
-            Order orderItem = order.get();
-            productsItems.forEach(orderItem.getProductList()::add);
+        Order order = getCart(buyer);
+        if(order != null){
+            productsItems.forEach(order.getProductList()::add);
 
             double price = productsItems.stream().map(productItem -> productItem.getProduct().getDiscountPrice()).reduce(0.0, (price1,price2)->price1+price2);
             double points = 100;
             double totalPrice = price - points / 100;
-            orderItem.setTotalPrice(totalPrice);
-            orderItem.setDiscount(points / 100);
+            order.setTotalPrice(totalPrice);
+            order.setDiscount(points / 100);
 
-            return orderRepository.save(orderItem);
+            return orderRepository.save(order);
         }
         else{
             double totalPrice = 0.0;
