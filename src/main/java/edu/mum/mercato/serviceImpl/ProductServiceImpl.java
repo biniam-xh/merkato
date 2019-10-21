@@ -1,6 +1,7 @@
 package edu.mum.mercato.serviceImpl;
 
 import edu.mum.mercato.domain.Product;
+import edu.mum.mercato.domain.ProductImage;
 import edu.mum.mercato.repository.ProductRepository;
 import edu.mum.mercato.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,4 +22,9 @@ public class ProductServiceImpl implements ProductService {
         productRepository.findAll().forEach(products::add);
         return products;
     }
+
+//    @Override
+//    public Product save(Product product) {
+//        for(ProductImage image : product.getImages());
+//    }
 }
