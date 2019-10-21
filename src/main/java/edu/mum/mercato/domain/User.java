@@ -21,4 +21,7 @@ public class User {
     @OneToMany
     private List<User> followers = new ArrayList<>();
 
+    public long getId() {
+        return id;
+    }
 }

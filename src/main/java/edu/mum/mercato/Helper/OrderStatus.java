@@ -1,5 +1,5 @@
 package edu.mum.mercato.Helper;
 
-public enum ProductStatus {
+public enum OrderStatus {
     PENDING, ORDERED, CANCELED, SHIPPED, DELIVERED;
 }

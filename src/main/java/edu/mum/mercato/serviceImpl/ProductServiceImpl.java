@@ -1,7 +1,7 @@
 package edu.mum.mercato.serviceImpl;
 
-import edu.mum.mercato.domain.Product;
-import edu.mum.mercato.domain.ProductImage;
+import edu.mum.mercato.domain.*;
+import edu.mum.mercato.repository.ProductItemRepository;
 import edu.mum.mercato.repository.ProductRepository;
 import edu.mum.mercato.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductItemRepository productItemRepository;
 
     @Override
     public List<Product> getAllProducts() {
@@ -23,8 +25,17 @@ public class ProductServiceImpl implements ProductService {
         return products;
     }
 
-//    @Override
-//    public Product save(Product product) {
-//        for(ProductImage image : product.getImages());
-//    }
+
+    @Override
+    public Product saveProduct(Product product, int copies) {
+        for(int i=0; i<copies; i++){
+            product.getProductItems().add(new ProductItem(product));
+        }
+        return productRepository.save(product);
+
+
+    }
+
+
+
 }

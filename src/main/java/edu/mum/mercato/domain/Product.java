@@ -1,16 +1,12 @@
 package edu.mum.mercato.domain;
 
-import edu.mum.mercato.Helper.ProductStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -50,7 +46,9 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private List<Review> reviewList = new ArrayList<>();
-    private Enum status = ProductStatus.PENDING;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductItem> productItems = new ArrayList<>();
 
 
     public List<ProductImage> getImages() {
@@ -67,5 +65,17 @@ public class Product {
             this.images.add(new ProductImage(url,this));
         }
         this.createdDate = LocalDate.now();
+    }
+
+    public double getOldPrice() {
+        return oldPrice;
+    }
+
+    public double getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public List<ProductItem> getProductItems() {
+        return productItems;
     }
 }
