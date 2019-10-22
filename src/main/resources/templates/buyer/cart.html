@@ -14,7 +14,7 @@
         <div class="col-10">
             <div class="d-flex flex-row justify-content-between flex-wrap">
                 <!-- Card Regular -->
-                <div class="card card-cascade m-3 product" th:each="product : ${products}">
+                <div class="card card-cascade m-3 product" th:if="${products}" th:each="product : ${products}">
 
                     <!-- Card image -->
                     <div class="view view-cascade overlay">
@@ -46,9 +46,10 @@
 
                     <!-- Card footer -->
                     <div class="card-footer text-muted text-center">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" th:data-target="'#modalQuickView' + ${product.Id}">
-                            See Product Detail
-                        </button>
+                        <button class="btn btn-default" data-toggle="modal" th:data-target="'#modalQuickView' + ${product.Id}">Edit
+                            <i class="fas fa-pencil-alt ml-1"></i></button>
+                        <button type="button" th:data="${product.Id}" class="btn btn-danger delete-items">Delete</button>
+
                     </div>
 
                     <!-- Modal: modalQuickView -->
@@ -165,7 +166,7 @@
 
                                                         <select class="md-form mdb-select colorful-select dropdown-primary select-quantity" >
 
-                                                            <option th:each="i : ${#numbers.sequence(1, product.copiesCount)}" th:value="${i}" th:text="${i}">
+                                                            <option th:each="i : ${#numbers.sequence(0, product.copiesCount)}" th:value="${i}" th:text="${i}">
                                                             </option>
 
                                                         </select>
@@ -178,7 +179,7 @@
                                                     <button type="button" class="btn btn-secondary"
                                                             data-dismiss="modal">Close
                                                     </button>
-                                                    <button  th:data="${product.Id}" class="btn btn-primary add-to-cart" data-dismiss="modal">Add to cart
+                                                    <button  th:data="${product.Id}" class="btn btn-primary add-to-cart" data-dismiss="modal">Save
                                                         <i class="fas fa-cart-plus ml-2"  aria-hidden="true"></i></span>
                                                     </button>
                                                 </div>

@@ -13,5 +13,7 @@ public interface ProductService {
     ProductItem saveItem(ProductItem p);
     List<ProductItem> findProductItems(Long id);
 
+    List<Product> getProductsInCart(Long id);
+
 
 }

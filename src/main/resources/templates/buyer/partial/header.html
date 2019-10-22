@@ -14,7 +14,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" th:href="@{products}">Products
+                    <a class="nav-link" th:href="@{/products}">Products
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
@@ -38,7 +38,7 @@
                 <li class="nav-item">
                     <a class="nav-link waves-effect waves-light">
                         <i class="fas fa-shopping-cart" data-toggle="modal" data-target="#modalAbandonedCart" aria-hidden="true"></i>
-                        <span class="counter">2</span>
+                        <span th:if="${productItems}" th:text="${productItems.size()}" id="cartCount" class="counter">2</span>
                     </a>
                 </li>
                  <li class="nav-item">
@@ -75,7 +75,7 @@
             <div class="modal-content">
                 <!--Header-->
                 <div class="modal-header">
-                    <p class="heading">Product in the cart
+                    <p class="heading">Products in the cart
                     </p>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -84,7 +84,7 @@
                 </div>
 
                 <!--Body-->
-                <div class="modal-body">
+                <div class="modal-body" th:if="${productItems}">
 
                     <div class="row">
                         <div class="col-3">
@@ -93,15 +93,16 @@
                         </div>
 
                         <div class="col-9">
+                            <p th:text="'You have '+ ${productItems.size()} + ' items in the cart'"></p>
                             <p>Do you need more time to make a purchase decision?</p>
-                            <p>No pressure, your product will be waiting for you in the cart.</p>
+
                         </div>
                     </div>
                 </div>
 
                 <!--Footer-->
                 <div class="modal-footer justify-content-center">
-                    <a type="button" class="btn btn-info">Go to cart</a>
+                    <a type="button" class="btn btn-info" th:href="@{/products/cart}">Go to cart</a>
                     <a type="button" class="btn btn-outline-info waves-effect" data-dismiss="modal">Cancel</a>
                 </div>
             </div>

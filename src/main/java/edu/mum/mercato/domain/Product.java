@@ -59,7 +59,7 @@ public class Product {
     private List<ProductItem> productItems = new ArrayList<>();
 
     @Transient
-    private int copiesCount;
+    private Long copiesCount;
 
     public List<ProductImage> getImages() {
         return images;
@@ -78,7 +78,7 @@ public class Product {
         this.createdDate = LocalDate.now();
     }
 
-    public int getCopiesCount(){
-        return getProductItems().size();
+    public Long getCopiesCount(){
+        return getProductItems().stream().filter(productItem -> productItem.getOrder()==null).count();
     }
 }
