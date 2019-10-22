@@ -1,9 +1,12 @@
 package edu.mum.mercato.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import edu.mum.mercato.Helper.OrderStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,20 +26,25 @@ public class Order {
     private double totalPrice;
     private double discount;
     private Enum orderStatus = OrderStatus.PENDING;
+
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name="User_ID")
     private User buyer;
 
-    @OneToMany
-    @JoinColumn(name="Product_ID")
+    @JsonBackReference
+    @OneToMany(mappedBy = "order")
     private List<ProductItem> productList = new ArrayList<>();
 
-    public Order(double totalPrice, double discount, User buyer, List<ProductItem> list){
+    public Order(double totalPrice, double discount, User buyer){
         this.totalPrice = totalPrice;
         this.discount = discount;
         this.buyer = buyer;
-        list.forEach(this.productList::add);
 
+
+    }
+
+    public Order(double totalPrice, double discount, User buyer, List<ProductItem> productsItems) {
     }
 
     public double getTotalPrice() {
@@ -57,5 +65,9 @@ public class Order {
 
     public List<ProductItem> getProductList() {
         return productList;
+    }
+
+    public void setProductList(List<ProductItem> productList) {
+        this.productList = productList;
     }
 }

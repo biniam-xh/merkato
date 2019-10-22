@@ -14,25 +14,19 @@ public class ProductImage {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
-//    @Lob
-//    @Column(name = "Image", length = Integer.MAX_VALUE, nullable = true)
-//    private byte[] image;
-
     private String imageURL;
-
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "Product_Id")
     private Product product;
 
-//    public ProductImage(String url, Product product){
-//        this.imageURL = url;
-//        this.product = product;
-//    }
-//
-//    public String getImageURL() {
-//        return imageURL;
-//    }
+    public ProductImage(String url, Product product){
+        this.imageURL = url;
+        this.product = product;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
 }
 
 

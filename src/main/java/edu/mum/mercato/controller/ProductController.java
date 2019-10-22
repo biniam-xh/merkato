@@ -40,12 +40,7 @@ public class ProductController {
     public String addProduct(@ModelAttribute("newProduct") Product product, BindingResult bindingResult,
                              HttpServletRequest request) throws IOException {
 
-        String rootDirectory= request.getSession().getServletContext().getRealPath("/");
-        ProductImage imOb = new ProductImage();
-        imOb.setImageURL(rootDirectory);
-        product.setImages(imOb);
-
-        productService.saveProduct(product);
+              productService.saveProduct(product);
 
         return "redirect:/list";
     }
