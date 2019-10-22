@@ -1,11 +1,19 @@
 package edu.mum.mercato.domain;
 
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@ToString
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +26,10 @@ public class User {
     private String email;
     @Column(name = "Password")
     private String password;
-    @OneToMany
-    private List<User> follow = new ArrayList<>();
+    @Column(name = "Active")
+    private boolean active;
+
+   @OneToOne
+   private Role role;
+
 }
