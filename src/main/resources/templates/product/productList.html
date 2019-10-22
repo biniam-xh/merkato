@@ -10,30 +10,46 @@
 </head>
 <body>
 
+
 <div th:fragment="productList" class="container">
-    <table class="table table-dark">
+    <table class="table table-secondary">
         <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">Product Name</th>
             <th scope="col">Type</th>
             <th scope="col">Price</th>
-            <th scope="col"></th>
+            <th scope="col">Date Entered</th>
+            <th scope="col">Available Copies</th>
+            <th scope="col">Product Image</th>
+<!--            <th scope="col">Review</th>-->
             <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td><input type="button" value="Update"></td>
-            <td><input type="button" value="Delete"></td>
+        <tr th:each="product, i : ${products}">
+            <th scope="row" th:text="${i.index + 1}"></th>
+            <td th:text="${product.title}"></td>
+            <td th:text="${product.category.categoryName}"></td>
+            <td th:text="${product.discountPrice}"></td>
+            <td th:text="${product.createdDate}"></td>
+            <td th:text="${product.productItems.size()}"></td>
+<!--            <td th:text="${product.images.get(0)}"></td>-->
+<!--            <td th:text="${product.images.get(0).imageURL}"></td>-->
+<!--            <td><img th:src="${product.images.get(0).imageURL}"></td>-->
+<!--            <td><img th:src="@{/product.images.get(0).image}"></td>-->
+<!--            <td><img th:src="@{/productImage?id=${product.id}}"></td>-->
+            <td><img th:src="${product.images.get(0).imageURL}" width="128" height="128"></td>
+
+<!--            <td th:text="${product.reviewList.get(0)}"></td>-->
+            <td><input type="button" value="Update" class="btn-info"><input type="button" value="Delete" class="btn-danger"></td>
         </tr>
         </tbody>
     </table>
+<!--    <img src="images/products/fikir.jpg">-->
 </div>
+
+<div th:replace="/shared/footer"></div>
 
 </body>
 </html>

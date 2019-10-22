@@ -1,15 +1,43 @@
 
 function saveProductData(){
 
+    alert("inside SaveProductData ... to add the product");
+
+    var imageData = new FormData('#productForm');
+
     var productData = JSON.stringify(serializeObject($('#productForm')));
 
+
     $.ajax({
-        url: '/add',
+        url: '/addProductImage',
         type: 'POST',
-        dataType: "json",
+        enctype: 'multipart/form-data',
+        // dataType: "json",
+        data: imageData,
+        contentType: false,
+        processType: false,
+        success: function(productImageJson){
+            lert("success inside adding image");
+            productData.productImage.imageURL = productImageJson.imageURL;
+
+        },
+
+        error: function(erroObject){
+            alert("Error in uploading file");
+
+
+        }
+
+    });
+
+    $.ajax({
+        url: '/addProduct',
+        type: 'POST',
+        dataType: 'json',
         data: productData,
         contentType: 'application/json',
         success: function(productObject){
+            alert("inside addProduct ajax");
             $('#success').html("");
             $("#success").append( "<H3 align='center' class='btn-success'>Your are Succesfully added a " + productObject.category.name + "<H3>");
             $("#success").append('<h4 align="center"> <input type="button" value="CLOSE" class="btn-danger" onclick="toggle_visibility(\'success\');"></h4>');
@@ -32,7 +60,8 @@ function saveProductData(){
                 $('#errors').show();
             }
             else {
-                alert(erroObject.responseJSON.message);
+                // alert(erroObject.responseJSON.message);
+                alert("I think error has happened!");
             }
         }
 

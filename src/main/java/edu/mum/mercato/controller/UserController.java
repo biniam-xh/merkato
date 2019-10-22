@@ -1,6 +1,7 @@
 package edu.mum.mercato.controller;
 
 import edu.mum.mercato.domain.Product;
+import edu.mum.mercato.domain.ProductImage;
 import edu.mum.mercato.domain.User;
 import edu.mum.mercato.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

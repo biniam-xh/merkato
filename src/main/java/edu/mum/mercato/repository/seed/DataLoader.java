@@ -24,15 +24,15 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void seedProducts(){
-        List<String> images = Arrays.asList("http://www.momax.net/wp-content/uploads/2016/11/w_cable_1400px_flatten_05.jpg",
-                "http://www.momax.net/wp-content/uploads/2018/03/products_img_DL12_cover-5.jpg");
-        Product p1 = new Product("Ankle Power Line", "Lightning Cable", 10.00, images);
-        Product p2 = new Product("Ankle Power Line", "Lightning Cable", 15.00, images);
-        Product p3 = new Product("Ankle Power Line", "Lightning Cable", 20.00, images);
-
-        productRepository.save(p1);
-        productRepository.save(p2);
-        productRepository.save(p3);
+//        List<String> images = Arrays.asList("http://www.momax.net/wp-content/uploads/2016/11/w_cable_1400px_flatten_05.jpg",
+//                "http://www.momax.net/wp-content/uploads/2018/03/products_img_DL12_cover-5.jpg");
+//        Product p1 = new Product("Ankle Power Line", "Lightning Cable", 10.00, images);
+//        Product p2 = new Product("Ankle Power Line", "Lightning Cable", 15.00, images);
+//        Product p3 = new Product("Ankle Power Line", "Lightning Cable", 20.00, images);
+//
+//        productRepository.save(p1);
+//        productRepository.save(p2);
+//        productRepository.save(p3);
 
 
 
