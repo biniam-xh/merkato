@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -22,7 +23,10 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
         productRepository.findAll().forEach(products::add);
-        return products;
+        //temp filter
+        return products.stream().filter(product -> product.getCopiesCount() != 0 && product.getProductItems().stream()
+                .anyMatch(item->item.getOrder()== null))
+                .collect(Collectors.toList());
     }
 
 
