@@ -51,8 +51,6 @@ public class OrderServiceImpl implements OrderService {
             productsItems.forEach(productItem -> productItem.setOrder(order));
             //productsItems.forEach(productItem -> productService.saveItem(productItem));
 
-            System.out.println("444444444444444444444444444444444");
-            System.out.println(order.getProductList().size());
             return orderRepository.save(order);
         }
         else{
@@ -61,8 +59,6 @@ public class OrderServiceImpl implements OrderService {
             Order updatedOrder = new Order(totalPrice,discount,buyer);
             productsItems.forEach(productItem -> productItem.setOrder(updatedOrder));
 
-            //updatedOrder.setProductList(productsItems);
-            //productsItems.forEach(productItem -> productService.saveItem(productItem));
             return orderRepository.save(updatedOrder);
         }
 

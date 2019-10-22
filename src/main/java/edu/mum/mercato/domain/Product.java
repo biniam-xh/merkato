@@ -78,17 +78,6 @@ public class Product {
         this.createdDate = LocalDate.now();
     }
 
-    public double getOldPrice() {
-        return oldPrice;
-    }
-
-    public double getDiscountPrice() {
-        return discountPrice;
-    }
-
-    public List<ProductItem> getProductItems() {
-        return productItems;
-    }
     public int getCopiesCount(){
         return getProductItems().size();
     }

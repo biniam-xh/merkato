@@ -44,27 +44,5 @@ public class Order {
 
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
-    }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(double discount) {
-        this.discount = discount;
-    }
-
-    public List<ProductItem> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(List<ProductItem> productList) {
-        this.productList = productList;
-    }
 }
