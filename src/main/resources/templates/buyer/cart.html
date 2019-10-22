@@ -10,11 +10,13 @@
 
 <div class="container">
     <div class="row">
-        <div class="col"></div>
+
+
         <div class="col-10">
-            <div class="d-flex flex-row justify-content-between flex-wrap">
+
+            <div class="d-flex flex-row justify-content-lg-start flex-wrap">
                 <!-- Card Regular -->
-                <div class="card card-cascade m-3 product" th:if="${products}" th:each="product : ${products}">
+                <div class="card card-cascade m-3 product" th:if="${products}" th:each="product : ${products}" th:id="'card'+${product.Id}">
 
                     <!-- Card image -->
                     <div class="view view-cascade overlay">
@@ -35,10 +37,9 @@
                         <!-- Title -->
                         <h4 class="card-title"><strong th:text="${product.title}"></strong></h4>
                         <!-- Subtitle -->
-                        <h6 class="font-weight-bold red-text py-2">$<span th:text="${product.discountPrice}"></span></h6>
+                        <h6 class="font-weight-bold red-text py-2"><span th:text="'Sub total: $'+ ${product.discountPrice * product.orderedAmount}"></span></h6>
                         <!-- Text -->
-                        <p class="card-text" th:text="${product.description}">Lorem ipsum dolor sit amet, consectetur
-                            adipisicing elit. Voluptatibus, ex, recusandae. Facere modi sunt, quod quibusdam.
+                        <p class="card-text" th:text="'Quantity: '+${product.orderedAmount}">
                         </p>
 
 
@@ -46,9 +47,10 @@
 
                     <!-- Card footer -->
                     <div class="card-footer text-muted text-center">
-                        <button class="btn btn-default" data-toggle="modal" th:data-target="'#modalQuickView' + ${product.Id}">Edit
+                        <button class="btn btn-default btn-sm" data-toggle="modal" th:data-target="'#modalQuickView' + ${product.Id}">Edit
                             <i class="fas fa-pencil-alt ml-1"></i></button>
-                        <button type="button" th:data="${product.Id}" class="btn btn-danger delete-items">Delete</button>
+                        <button type="button" th:data="${product.Id}" class="btn btn-danger btn-sm delete-items">Delete</button>
+
 
                     </div>
 
@@ -166,7 +168,7 @@
 
                                                         <select class="md-form mdb-select colorful-select dropdown-primary select-quantity" >
 
-                                                            <option th:each="i : ${#numbers.sequence(0, product.copiesCount)}" th:value="${i}" th:text="${i}">
+                                                            <option th:each="i : ${#numbers.sequence(1, product.copiesCount + product.orderedAmount)}" th:value="${i}" th:text="${i}">
                                                             </option>
 
                                                         </select>
@@ -176,12 +178,14 @@
                                                 </div>
                                                 <div class="text-center">
 
-                                                    <button type="button" class="btn btn-secondary"
+                                                    <button type="button" class="btn btn-light"
                                                             data-dismiss="modal">Close
                                                     </button>
-                                                    <button  th:data="${product.Id}" class="btn btn-primary add-to-cart" data-dismiss="modal">Save
+                                                    <button  th:data="${product.Id}" class="btn btn-default edit-cart" data-dismiss="modal">Save
                                                         <i class="fas fa-cart-plus ml-2"  aria-hidden="true"></i></span>
                                                     </button>
+
+
                                                 </div>
                                             </div>
                                             <!-- /.Add to Cart -->

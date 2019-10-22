@@ -73,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order findById(Long l) {
-       return orderRepository.findById(l).get();
+       return orderRepository.findById(l).orElse(null);
     }
 
     @Override
@@ -87,6 +87,12 @@ public class OrderServiceImpl implements OrderService {
                 }
             }
         }
+    }
+
+    @Override
+    public Long getProductAmmount(Long orderId, Long productId) {
+        Order order = orderRepository.findById(orderId).get();
+        return order.getProductList().stream().filter(productItem -> productItem.getProduct().getId()==productId).count();
     }
 
 

@@ -35,16 +35,29 @@
             </ul>
             <ul class="navbar-nav ml-auto nav-flex-icons">
                 <!-- Button trigger modal-->
+                <li class="nav-item mr-3" th:if="${cartPage}">
+                    <a class="nav-link btn-block btn btn-warning waves-effect waves-light">
+                        <span  class="">Checkout</span>
+                    </a>
+                </li>
+
+
+                <li class="nav-item"></li>
+
+
                 <li class="nav-item">
                     <a class="nav-link waves-effect waves-light">
                         <i class="fas fa-shopping-cart" data-toggle="modal" data-target="#modalAbandonedCart" aria-hidden="true"></i>
-                        <span th:if="${productItems}" th:text="${productItems.size()}" id="cartCount" class="counter">2</span>
+                        <span th:if="${productItems}" th:text="${productItems.size()}" class="counter cartCount"></span>
+                        <span th:unless="${productItems}" class="counter cartCount"></span>
                     </a>
                 </li>
+
+
                  <li class="nav-item">
                     <a class="nav-link waves-effect waves-light">
                         <i class="fas fa-bell"></i>
-                        <span class="counter">2</span>
+                        <span class="counter"></span>
                     </a>
                 </li>
 
@@ -93,7 +106,11 @@
                         </div>
 
                         <div class="col-9">
-                            <p th:text="'You have '+ ${productItems.size()} + ' items in the cart'"></p>
+                            <p>
+                                <span class="">You have </span>
+                                <span class="cartCount" th:text="${productItems.size()}"></span>
+                                <span class=""> items in the cart</span>
+                            </p>
                             <p>Do you need more time to make a purchase decision?</p>
 
                         </div>

@@ -37,6 +37,12 @@ public class DataLoader implements ApplicationRunner {
         for(int i=0; i<10; i++){
             p1.getProductItems().add(new ProductItem(p1));
         }
+        for(int i=0; i<5; i++){
+            p2.getProductItems().add(new ProductItem(p2));
+        }
+        for(int i=0; i<5; i++){
+            p3.getProductItems().add(new ProductItem(p3));
+        }
 
         productRepository.save(p1);
         productRepository.save(p2);

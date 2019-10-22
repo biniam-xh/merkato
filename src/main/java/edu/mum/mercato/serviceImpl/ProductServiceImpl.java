@@ -56,8 +56,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProductsInCart(Long id) {
-        return null;
+    public int getProductsInCartCount(Long id) {
+        return productItemRepository.findAllByOrderId(id).size();
     }
 
 

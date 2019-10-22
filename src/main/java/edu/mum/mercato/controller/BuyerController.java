@@ -50,7 +50,10 @@ public class BuyerController {
           if(buyer==null)buyer = new User(); userService.save(buyer);
 
           Order order = orderService.addToCart(item.getProduct_id(),item.getQuantity(), buyer);
-          return order.getProductList().size();
+
+        //temp response
+            int count = productService.getProductsInCartCount(order.getId());
+          return count;
 
     }
     @GetMapping("/products/test")
@@ -62,9 +65,13 @@ public class BuyerController {
     public String cart(Model model){
         Order order = orderService.findById(1L);
         if(order!=null){
-            model.addAttribute("products",order.getProductList().stream()
-                    .map(productItem -> productItem.getProduct()).distinct().collect(Collectors.toList()));
+            List<Product> products = order.getProductList().stream()
+                    .map(productItem -> productItem.getProduct()).distinct().collect(Collectors.toList());
+
+            products.stream().forEach(product -> product.setOrderedAmount(Math.toIntExact(orderService.getProductAmmount(order.getId(),product.getId()))));
+            model.addAttribute("products",products);
             model.addAttribute("productItems", order.getProductList());
+            model.addAttribute("cartPage", true);
 
         }
         return "buyer/cart";
@@ -74,6 +81,19 @@ public class BuyerController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void addToCart(@PathVariable("product_id") long product_id){
         orderService.deleteItems(product_id);
+    }
+
+    @PutMapping(value= "/products/editcart/{product_id}/{selected}")
+    public @ResponseBody int editcart(@PathVariable("product_id") long product_id, @PathVariable("selected") int quantity){
+        //test user
+        User buyer = userService.findById(1L);
+        if(buyer==null)buyer = new User(); userService.save(buyer);
+
+        orderService.deleteItems(product_id);
+        orderService.addToCart(product_id,quantity, buyer);
+
+        //temp response
+        return quantity;
     }
 
 }

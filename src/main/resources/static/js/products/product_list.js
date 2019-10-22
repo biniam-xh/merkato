@@ -18,10 +18,12 @@ $(document).ready(function() {
             data: JSON.stringify({product_id: product_id, quantity: selected}),
             success: function(data){
                 console.log(data);
-                $("#cartCount").text(data);
+                $(".cartCount").text(data)
+                $(".cartCount").html(data);
+
             },
             error: function (error) {
-                console.log('eror========================================')
+                console.log('error========================================')
                 console.log(error);
 
             }
@@ -44,14 +46,38 @@ $(document).ready(function() {
                     console.log(data)
                 },
                 error: function (error) {
-                    console.log('eror========================================')
+                    console.log('error========================================')
                     console.log(error);
 
                 }
             }
 
         );
-        $(this).hide();
+        $("#card"+product_id).hide();
+    });
+
+
+    $(".edit-cart").click(function(){
+        product_id = $(this).attr("data");
+
+        var contextRoot = "/" + window.location.pathname.split('/')[1];
+        $.ajax({
+                url: contextRoot+"/editcart/"+product_id+"/"+ selected,
+                contentType: 'application/json',
+                dataType: 'json',
+                type: "put",
+                success: function(data){
+                    console.log(data);
+                    $(".cartCount").html(data)
+                },
+                error: function (error) {
+                    console.log('error========================================')
+                    console.log(error);
+
+                }
+            }
+
+        );
     });
 
 

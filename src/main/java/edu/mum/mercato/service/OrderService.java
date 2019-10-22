@@ -15,4 +15,5 @@ public interface OrderService {
     Order findById(Long l);
 
     void deleteItems(Long productId);
+    Long getProductAmmount(Long orderId, Long productId);
 }
