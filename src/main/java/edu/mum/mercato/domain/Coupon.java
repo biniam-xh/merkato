@@ -12,5 +12,5 @@ public class Coupon {
     @OneToOne
     @JoinColumn(name = "User_Id")
     private User buyer;
-    private int point;
+    private int point = 0;
 }

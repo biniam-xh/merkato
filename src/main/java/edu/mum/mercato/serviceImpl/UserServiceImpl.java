@@ -2,6 +2,7 @@ package edu.mum.mercato.serviceImpl;
 
 import edu.mum.mercato.domain.User;
 import edu.mum.mercato.exception.NotFoundException;
+
 import edu.mum.mercato.repository.UserRepository;
 import edu.mum.mercato.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
-
 
     @Override
     public User findUserByEmail(String email) {
@@ -37,5 +37,8 @@ public class UserServiceImpl implements UserService {
         if(findUserByEmail(user.getEmail())==null){
             userRepository.save(user);
         }
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
     }
 }

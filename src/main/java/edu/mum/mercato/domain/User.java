@@ -30,6 +30,5 @@ public class User {
     private boolean active;
 
    @OneToOne
-   private Role role;
-
+   private 
 }
