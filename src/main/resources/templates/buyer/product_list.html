@@ -46,13 +46,13 @@
 
                     <!-- Card footer -->
                     <div class="card-footer text-muted text-center">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalQuickView">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" th:data-target="'#modalQuickView' + ${product.Id}">
                             See Product Detail
                         </button>
                     </div>
 
                     <!-- Modal: modalQuickView -->
-                    <div class="modal fade" id="modalQuickView" tabindex="-1" role="dialog"
+                    <div class="modal fade" th:id="'modalQuickView' + ${product.Id}" id="modalQuickView" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalLabel"
                          aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
@@ -159,26 +159,17 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
 
-                                                        <select class="md-form mdb-select colorful-select dropdown-primary">
-                                                            <option value="" disabled selected>Choose your option
-                                                            </option>
-                                                            <option value="1">White</option>
-                                                            <option value="2">Black</option>
-                                                            <option value="3">Pink</option>
-                                                        </select>
-                                                        <label>Select color</label>
 
                                                     </div>
                                                     <div class="col-md-6">
 
-                                                        <select class="md-form mdb-select colorful-select dropdown-primary">
-                                                            <option value="" disabled selected>Choose your option
+                                                        <select class="md-form mdb-select colorful-select dropdown-primary select-quantity" >
+
+                                                            <option th:each="i : ${#numbers.sequence(0, product.copiesCount)}" th:value="${i}" th:text="${i}">
                                                             </option>
-                                                            <option value="1">XS</option>
-                                                            <option value="2">S</option>
-                                                            <option value="3">L</option>
+
                                                         </select>
-                                                        <label>Select size</label>
+                                                        <label>Select Quantity</label>
 
                                                     </div>
                                                 </div>
@@ -187,8 +178,8 @@
                                                     <button type="button" class="btn btn-secondary"
                                                             data-dismiss="modal">Close
                                                     </button>
-                                                    <button class="btn btn-primary" data-dismiss="modal">Add to cart
-                                                        <i class="fas fa-cart-plus ml-2"  aria-hidden="true"></i>
+                                                    <button  th:data="${product.Id}" class="btn btn-primary add-to-cart" data-dismiss="modal">Add to cart
+                                                        <i class="fas fa-cart-plus ml-2"  aria-hidden="true"></i></span>
                                                     </button>
                                                 </div>
                                             </div>

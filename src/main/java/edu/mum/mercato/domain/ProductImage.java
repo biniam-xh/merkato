@@ -1,5 +1,6 @@
 package edu.mum.mercato.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,8 @@ public class ProductImage {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String imageURL;
+
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "Product_Id")
     private Product product;
