@@ -42,9 +42,6 @@ public class Product {
 
     private String productCategoryName;
 
-//    @Lob
-//    @Column(name = "Image", length = Integer.MAX_VALUE, nullable = true)
-//    private byte[] image;
 
      @Transient
      @JsonIgnore
@@ -72,21 +69,6 @@ public class Product {
     private List<ProductItem> productItems = new ArrayList<>();
 
 
-//    public List<ProductImage> getImages() {
-//        return images;
-//    }
-
-//    public Product(String title, String description, double price, List<String> image_urls) {
-//        this.title = title;
-//        this.description = description;
-//        this.discountPrice = price;
-//        this.oldPrice = price - 4;
-//        this.images = new ArrayList<>();
-//        for(String url: image_urls){
-//            this.images.add(new ProductImage(url,this));
-//        }
-//        this.createdDate = LocalDate.now();
-//    }
 
     public void setImages(ProductImage productImage){
         this.images.add(productImage);
