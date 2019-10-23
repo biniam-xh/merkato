@@ -27,9 +27,7 @@ public class ProductImage {
         this.product = product;
     }
 
-    public String getImageURL() {
-        return imageURL;
-    }
+
 }
 
 

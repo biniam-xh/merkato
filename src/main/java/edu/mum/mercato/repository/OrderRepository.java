@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface OrderRepository extends CrudRepository<Order, Long> {
     Optional<Order> findFirstByBuyer_Id(Long buyerId);
     Optional<Order> findFirstByBuyer_IdAndOrderStatus(Long buyerId, Enum status);
+
 }

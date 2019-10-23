@@ -42,4 +42,5 @@ public class User {
     @OneToOne
     @Valid
     private Role role;
+
 }

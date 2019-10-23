@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,7 +61,10 @@ public class Product {
     private List<ProductItem> productItems = new ArrayList<>();
 
     @Transient
-    private int copiesCount;
+    private Long copiesCount;
+
+    @Transient
+    private int orderedAmount;
 
     public List<ProductImage> getImages() {
         return images;
@@ -78,18 +83,7 @@ public class Product {
         this.createdDate = LocalDate.now();
     }
 
-    public double getOldPrice() {
-        return oldPrice;
-    }
-
-    public double getDiscountPrice() {
-        return discountPrice;
-    }
-
-    public List<ProductItem> getProductItems() {
-        return productItems;
-    }
-    public int getCopiesCount(){
-        return getProductItems().size();
+    public Long getCopiesCount(){
+        return getProductItems().stream().filter(productItem -> productItem.getOrder()==null).count();
     }
 }
