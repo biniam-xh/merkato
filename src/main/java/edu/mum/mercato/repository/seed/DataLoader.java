@@ -1,11 +1,9 @@
 package edu.mum.mercato.repository.seed;
 
-import edu.mum.mercato.domain.Product;
-import edu.mum.mercato.domain.ProductImage;
-import edu.mum.mercato.domain.ProductItem;
-import edu.mum.mercato.domain.User;
+import edu.mum.mercato.domain.*;
 import edu.mum.mercato.repository.ProductItemRepository;
 import edu.mum.mercato.repository.ProductRepository;
+import edu.mum.mercato.repository.RoleRepository;
 import edu.mum.mercato.repository.UserRepository;
 import edu.mum.mercato.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class DataLoader implements ApplicationRunner {
@@ -25,6 +24,9 @@ public class DataLoader implements ApplicationRunner {
     private ProductItemRepository productItemRepository;
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -38,9 +40,16 @@ public class DataLoader implements ApplicationRunner {
         Product p2 = new Product("Ankle Power Line2", "Lightning Cable", 15.00, images);
         Product p3 = new Product("Ankle Power Line3", "Lightning Cable", 20.00, images);
 
+        Optional<Role> sellerRole=roleRepository.findById(2);
+
         User seller = new User();
         seller.setId(999);
         seller.setFirstName("BBB");
+        seller.setLastName("CCC");
+        seller.setActive(true);
+        seller.setRole(sellerRole.get());
+        seller.setEmail("seller@email.com");
+        seller.setPassword("klsolsowlo");
         seller = userRepository.save(seller);
 
         p1.setSeller(seller);

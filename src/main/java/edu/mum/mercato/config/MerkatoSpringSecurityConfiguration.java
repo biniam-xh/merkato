@@ -48,7 +48,7 @@ public class MerkatoSpringSecurityConfiguration extends WebSecurityConfigurerAda
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .failureUrl("/login-error")
+                .failureUrl("/login-error?error=true")
                 .usernameParameter("email")
                 .passwordParameter("password")//don't apply CSRF protection to /h2-console
                 .and()
@@ -65,19 +65,22 @@ public class MerkatoSpringSecurityConfiguration extends WebSecurityConfigurerAda
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
     }
+//
     @Bean
     public AuthenticationManager customAuthenticationManager() throws Exception {
         return authenticationManager();
     }
-
-
-
-
+//
+//
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetailsService);
+////                .passwordEncoder(bCryptPasswordEncoder());
+//    }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder bCryptPasswordEncoder() {
         return NoOpPasswordEncoder.getInstance();
-//        return new BCryptPasswordEncoder();
     }
 
 

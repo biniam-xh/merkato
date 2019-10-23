@@ -6,6 +6,7 @@ import edu.mum.mercato.exception.NotFoundException;
 import edu.mum.mercato.repository.UserRepository;
 import edu.mum.mercato.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
@@ -18,13 +19,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
-
-    @Override
-    public void createUser(User user) {
-        if(findUserByEmail(user.getEmail())==null){
-            userRepository.save(user);
-        }
-    }
+//    @Autowired
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public User findUserByEmail(String email) {
@@ -43,6 +39,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
+//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+//        System.out.println(user);
         return userRepository.save(user);
 
     }

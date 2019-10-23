@@ -76,6 +76,9 @@ public class Product {
     @Transient
     private int orderedAmount;
 
+    @Column(name = "Approved")
+    private boolean approved;
+
     public List<ProductImage> getImages() {
         return images;
     }
@@ -91,6 +94,7 @@ public class Product {
             this.images.add(new ProductImage(url,this));
         }
         this.createdDate = LocalDate.now();
+        this.approved=false;
     }
 
     public void setImages(ProductImage productImage){

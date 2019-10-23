@@ -1,5 +1,6 @@
 package edu.mum.mercato.serviceImpl;
 
+import edu.mum.mercato.config.MerkatoUserDetails;
 import edu.mum.mercato.service.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,12 +24,11 @@ public class SecurityServiceImp implements SecurityService {
     @Autowired
     private UserDetailsService userDetailsService;
 
-
     @Override
-    public String findLoggedInUsername() {
-        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
+    public MerkatoUserDetails findLoggedInUser() {
+        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userDetails instanceof UserDetails) {
-            return ((UserDetails)userDetails).getUsername();
+            return ((MerkatoUserDetails)userDetails);
         }
 
         return null;
