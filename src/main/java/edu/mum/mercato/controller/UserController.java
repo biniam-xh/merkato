@@ -18,7 +18,7 @@ public class UserController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public @ResponseBody User addUser(@Valid @RequestBody User user){
-            userService.saveUser(user);
+            userService.save(user);
         return user;
     }
 
