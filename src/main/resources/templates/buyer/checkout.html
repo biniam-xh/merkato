@@ -76,6 +76,7 @@
 
                     <form action='/charge' method='POST' id='checkout-form'>
                         <input type='hidden' th:value='${amount}' name='amount' />
+                        <input type='hidden' th:value='${order.Id}' name='orderId' id="orderId"/>
                         <label>Price:<span th:text='${amount/100}' /></label>
                         <!-- NOTE: data-key/data-amount/data-currency will be rendered by Thymeleaf -->
                         <script
@@ -95,7 +96,7 @@
                             // have more than 1 button of that class
                             document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
                         </script>
-                        <button type="submit"  class="btn btn-primary btn-lg btn-block">COMPLETE ORDER</button>
+                        <button type="submit"  class="btn btn-primary btn-lg btn-block" id="complete-order">COMPLETE ORDER</button>
                     </form>
                 </div>
 

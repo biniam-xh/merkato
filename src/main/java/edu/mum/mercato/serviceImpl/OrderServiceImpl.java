@@ -1,11 +1,9 @@
 package edu.mum.mercato.serviceImpl;
 
 import edu.mum.mercato.Helper.OrderStatus;
-import edu.mum.mercato.domain.Order;
-import edu.mum.mercato.domain.Product;
-import edu.mum.mercato.domain.ProductItem;
-import edu.mum.mercato.domain.User;
+import edu.mum.mercato.domain.*;
 import edu.mum.mercato.repository.OrderRepository;
+import edu.mum.mercato.repository.PaymentRepository;
 import edu.mum.mercato.repository.ProductRepository;
 import edu.mum.mercato.service.OrderService;
 import edu.mum.mercato.service.ProductService;
@@ -26,6 +24,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    PaymentRepository paymentRepository;
 
     @Override
     public Order getCart(Long id) {
@@ -68,18 +68,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order completeOrder(Long orderId) {
+    public Order changeStatus(Long orderId, Enum e) {
         Order order = orderRepository.findById(orderId).get();
-        order.setOrderStatus(OrderStatus.ORDERED);
+        order.setOrderStatus(e);
         return orderRepository.save(order);
     }
 
-    @Override
-    public Order cancelOrder(Long orderId) {
-        Order order = orderRepository.findById(orderId).get();
-        order.setOrderStatus(OrderStatus.CANCELED);
-        return orderRepository.save(order);
-    }
 
     @Override
     public Order findById(Long l) {
@@ -131,6 +125,16 @@ public class OrderServiceImpl implements OrderService {
         else{
             return orderRepository.findAllByBuyerIdAndOrderStatusNotIn(userId, Arrays.asList(OrderStatus.ORDERED,OrderStatus.PENDING));
         }
+    }
+
+    @Override
+    public Payment savePayment(Payment payment) {
+        return paymentRepository.save(payment);
+    }
+
+    @Override
+    public Order saveOrder(Order order) {
+        return orderRepository.save(order);
     }
 
 

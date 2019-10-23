@@ -1,17 +1,13 @@
 package edu.mum.mercato.service;
 
-import edu.mum.mercato.domain.Order;
-import edu.mum.mercato.domain.Product;
-import edu.mum.mercato.domain.ProductItem;
-import edu.mum.mercato.domain.User;
+import edu.mum.mercato.domain.*;
 
 import java.util.List;
 
 public interface OrderService {
     Order getCart(Long buyerID);
     Order addToCart(Long productId, int quantity, User buyer);
-    Order completeOrder(Long orderId);
-    Order cancelOrder(Long orderId);
+    Order changeStatus(Long orderId, Enum e);
     Order findById(Long l);
 
     void deleteItems(Long productId);
@@ -19,4 +15,7 @@ public interface OrderService {
 
     List<Order> getActiveOrders(Long userId, boolean isSeller);
     List<Order> getNonActiveOrders(Long userId, boolean isSeller);
+
+    Payment savePayment(Payment payment);
+    Order saveOrder(Order order);
 }

@@ -43,8 +43,8 @@ public class Order {
     private Address shippingAddress;
 
 
-    @Transient
-    private String statusText;
+    @OneToOne
+    private Payment payment;
 
     public Order(double totalPrice, double discount, User buyer){
         this.totalPrice = totalPrice;
@@ -52,28 +52,7 @@ public class Order {
         this.buyer = buyer;
 
     }
-    String getStatusText(){
-        Enum e = this.getOrderStatus();
-        if(e == OrderStatus.PENDING){
-            statusText = "PENDING";
-        }
-        else if(e == OrderStatus.ORDERED){
-            statusText = "ORDERED";
-        }
-        else if(e == OrderStatus.SHIPPED){
-            statusText = "SHIPPED";
-        }
-        else if(e == OrderStatus.DELIVERED){
-            statusText = "DELIVERED";
-        }
-        else if(e == OrderStatus.CANCELED){
-            statusText = "CANCELED";
-        }
-        else{
-            statusText = "PENDING";
-        }
-        return statusText;
-    }
+
 
 
 }
