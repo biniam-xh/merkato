@@ -116,6 +116,31 @@ public class ProductServiceImpl implements ProductService {
         return productItemRepository.findAllByOrderId(id).size();
     }
 
+    @Override
+    public List<ProductItem> findProductItems(Long id) {
+        return productItemRepository.findByProductIdAndOrderIsNull(id);
+    }
+    @Override
+    public ProductItem saveItem(ProductItem p) {
+        return productItemRepository.save(p);
+    }
+
+
+    @Override
+    public Product findById(Long id) {
+        return productRepository.findById(id).get();
+    }
+
+    @Override
+    public Product saveProduct(Product product, int copies) {
+        for(int i=0; i<copies; i++){
+            product.getProductItems().add(new ProductItem(product));
+        }
+        return productRepository.save(product);
+
+
+    }
+
 
 
 }
