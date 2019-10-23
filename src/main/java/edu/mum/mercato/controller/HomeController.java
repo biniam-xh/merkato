@@ -3,6 +3,7 @@ package edu.mum.mercato.controller;
 import edu.mum.mercato.domain.Role;
 import edu.mum.mercato.domain.User;
 import edu.mum.mercato.repository.RoleRepository;
+import edu.mum.mercato.service.SecurityService;
 import edu.mum.mercato.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -21,25 +23,11 @@ public class HomeController {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    private SecurityService securityService;
+
     @RequestMapping("/")
     public String displayHomePage(){
-        Role admin=roleRepository.findById(1).get();
-        User user=new User();
-        user.setFirstName("hklsolsls");
-        user.setLastName("lsosls");
-        user.setEmail("han7jello@gmail.com");
-        user.setPassword("testme");
-        user.setActive(true);
-        user.setRole(admin);
-        User user2=new User();
-        user2.setFirstName("hklsolsls");
-        user2.setLastName("lsosls");
-        user2.setEmail("test@gmail.com");
-        user2.setPassword("testme");
-        user2.setActive(true);
-        user2.setRole(admin);
-        userService.createUser(user);
-        userService.createUser(user2);
         return "home";
     }
 
@@ -69,7 +57,7 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String createNewUser(@Valid User user, BindingResult bindingResult, Model model) throws ChangeSetPersister.NotFoundException {
+    public String createNewUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) throws ChangeSetPersister.NotFoundException {
         User userExists = userService.findUserByEmail(user.getEmail());
         if (userExists != null) {
             bindingResult
@@ -79,14 +67,20 @@ public class HomeController {
         if (bindingResult.hasErrors()) {
             return "register";
         } else {
+            System.out.println(user);
             Optional<Role> role=roleRepository.findById(user.getRole().getId());
             if(role.isPresent()){
                 user.setActive(true);
                 user.setRole(role.get());
                 userService.createUser(user);
-                model.addAttribute("successMessage", "User has been registered successfully");
-                model.addAttribute("user", new User());
-                return "login";
+                securityService.autoLogin(user.getEmail(), user.getPassword());
+                if(user.getRole().getId()==1){
+                    return "redirect:/admin";
+                }else if(user.getRole().getId()==2){
+                    return "redirect:/seller";
+                }else {
+                    return "redirect:/buyer";
+                }
             }else{
                 bindingResult
                         .rejectValue("role", "error.user",

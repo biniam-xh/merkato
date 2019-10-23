@@ -12,6 +12,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.util.List;
 import java.util.Optional;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -34,9 +36,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(User user) {
-        if(findUserByEmail(user.getEmail())==null){
+        if (findUserByEmail(user.getEmail()) == null) {
             userRepository.save(user);
         }
+    }
     @Override
     public User save(User user) {
         return userRepository.save(user);
