@@ -36,8 +36,10 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<ProductItem> productList = new ArrayList<>();
 
+    @OneToOne
     private Address billingAddress;
 
+    @OneToOne
     private Address shippingAddress;
 
     public Order(double totalPrice, double discount, User buyer){
