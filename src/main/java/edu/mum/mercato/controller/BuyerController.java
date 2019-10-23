@@ -228,4 +228,10 @@ public class BuyerController {
         return 1;
     }
 
+    @GetMapping("/orders/cancelOrder")
+    public String cancelOrder(@RequestParam("orderId") Long orderId, Model model){
+        orderService.changeStatus(orderId, OrderStatus.CANCELED);
+        return "redirect:/orderHistory";
+    }
+
 }

@@ -71,7 +71,42 @@
                         <button class="btn badge-light" id="generate-pdf">Download Receipt</button>
                         <div class="float-right" th:if="${isCurrent}">
 
-                            <button class="btn btn-danger pull-right" id="cancel">Cancel Order</button>
+                            <button class="btn btn-danger pull-right" data-toggle="modal" data-target="#centralModalDanger" >Cancel Order</button>
+
+                            <!-- Central Modal Medium Danger -->
+                            <div class="modal fade" id="centralModalDanger" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-notify modal-danger" role="document">
+                                    <!--Content-->
+                                    <div class="modal-content">
+                                        <!--Header-->
+                                        <div class="modal-header">
+
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true" class="white-text">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <!--Body-->
+                                        <div class="modal-body">
+                                            <div class="text-center">
+                                                <i class="fas fa-question fa-4x mb-3 animated rotateIn"></i>
+                                                <p>Are you sure that you want to cancel the order?</p>
+                                            </div>
+                                        </div>
+
+                                        <!--Footer-->
+                                        <div class="modal-footer justify-content-center">
+                                            <a type="button" th:data="${orderView.order.Id}" class="btn btn-danger" id="cancel-order" data-dismiss="modal">Yes</a>
+                                            <a type="button" class="btn btn-outline-danger waves-effect" data-dismiss="modal">No</a>
+                                        </div>
+                                    </div>
+                                    <!--/.Content-->
+                                </div>
+                            </div>
+                            <!-- Central Modal Medium Danger-->
+
                         </div>
 
                     </div>
@@ -82,6 +117,11 @@
         <div class="col"></div>
     </div>
 </div>
+
+
+
+<
+
 
 
 <div th:replace="shared/footer :: footer">

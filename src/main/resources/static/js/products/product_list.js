@@ -123,5 +123,12 @@ $(document).ready(function() {
         doc.save('a4.pdf');
     });
 
+    $("#cancel-order").click(function () {
+        var contextRoot = "/" + window.location.pathname.split('/')[1];
+        order_id = $(this).attr("data");
+        //alert(order_id)
+        window.location.href = contextRoot + "/cancelOrder?orderId="+order_id;
+    });
+
 
 });
