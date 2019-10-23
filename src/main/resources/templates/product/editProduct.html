@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}" type="text/css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" th:src="@{js/product.js}" src="js/registration.js"></script>
+</head>
+<body>
+
+<h1 class="pageHeade">Welcome Shemsu!</h1>
+
+<div th:fragment="addProductForm" class="container">
+    <!--    <div id="success" style="display:none"></div>-->
+    <!--    <div id="errors" style="display:none"></div>-->
+
+    <form action="#" th:action="@{/editProduct}" th:object="${product}" method="post" enctype="multipart/form-data" style="border:1px solid #ccc">
+        <div class="container">
+            <h1>Add Product</h1>
+
+            <input type="hidden" th:field="*{id}">
+
+            <label for="productName"><b>Product Name</b></label>
+            <input type="text" placeholder="Enter Product Name" name="title" th:field="*{title}" id="productName" required>
+
+            <label for="productCategory"><b>Product Name</b></label>
+            <input type="text" placeholder="Enter Product Category" name="productCategoryName" th:field="*{productCategoryName}" id="productCategory" required>
+
+            <label for="productDesc"><b>Product Description</b></label><br>
+            <textarea name="description" id="productDesc" th:field="*{description}" required></textarea><br>
+
+            <label for="copies"><b>Number of Copies</b></label><br>
+            <input name="numberOfCopies" id="copies" th:field="*{numberOfCopies}" required><br>
+
+            <label for="price"><b>Price</b></label>
+            <input type="text" placeholder="Enter Price" name="discountPrice" th:field="*{discountPrice}" id="price" required>
+
+            <label for="image"><b>Product Image</b></label><br>
+            <input type="file" name="imageData" th:field="*{imageData}" id="image" ><br>
+
+            <div class="clearfix">
+                <input type="submit" value="Add"  class="signupbtn"> &nbsp;&nbsp;
+                <input type="reset" value="Reset"  class="signupbtn">
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div th:replace="/shared/footer"></div>
+
+</body>
+</html>
