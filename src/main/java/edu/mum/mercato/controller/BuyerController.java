@@ -103,13 +103,12 @@ public class BuyerController {
             List<Product> products = order.getProductList().stream()
                     .map(productItem -> productItem.getProduct()).distinct().collect(Collectors.toList());
             products.stream().forEach(product -> product.setOrderedAmount(Math.toIntExact(orderService.getProductAmmount(order.getId(),product.getId()))));
+
+            model.addAttribute("order", order);
+            model.addAttribute("productItems", order.getProductList());
             model.addAttribute("products",products);
 
-            model.addAttribute("productItems", order.getProductList());
-
         }
-        List<ProductItem> ordredItems = orderService.getCart(1L).getProductList();
-        model.addAttribute("orderedItems",ordredItems);
 
         return "buyer/checkout";
     }
