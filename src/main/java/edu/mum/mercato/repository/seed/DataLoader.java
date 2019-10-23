@@ -1,9 +1,7 @@
 package edu.mum.mercato.repository.seed;
 
-import edu.mum.mercato.domain.Product;
-import edu.mum.mercato.domain.ProductImage;
-import edu.mum.mercato.domain.ProductItem;
-import edu.mum.mercato.domain.User;
+import edu.mum.mercato.domain.*;
+import edu.mum.mercato.repository.CategoryRepository;
 import edu.mum.mercato.repository.ProductItemRepository;
 import edu.mum.mercato.repository.ProductRepository;
 import edu.mum.mercato.repository.UserRepository;
@@ -25,6 +23,8 @@ public class DataLoader implements ApplicationRunner {
     private ProductItemRepository productItemRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -37,6 +37,16 @@ public class DataLoader implements ApplicationRunner {
         Product p1 = new Product("Ankle Power Line1", "Lightning Cable", 10.00, images);
         Product p2 = new Product("Ankle Power Line2", "Lightning Cable", 15.00, images);
         Product p3 = new Product("Ankle Power Line3", "Lightning Cable", 20.00, images);
+
+        Category category = new Category();
+        category.setCategoryName("Power Cable");
+        category.setProductList(p1);
+        category.setProductList(p2);
+        category.setProductList(p3);
+        p1.setCategory(category);
+        p2.setCategory(category);
+        p3.setCategory(category);
+        category = categoryRepository.save(category);
 
         User seller = new User();
         seller.setId(999);
@@ -57,6 +67,9 @@ public class DataLoader implements ApplicationRunner {
             p3.getProductItems().add(new ProductItem(p3));
         }
 
+        p1.setNumberOfCopies(p1.getCopiesCount());
+        p2.setNumberOfCopies(p2.getCopiesCount());
+        p3.setNumberOfCopies(p3.getCopiesCount());
         productRepository.save(p1);
         productRepository.save(p2);
         productRepository.save(p3);

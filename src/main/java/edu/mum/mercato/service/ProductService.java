@@ -21,5 +21,7 @@ public interface ProductService {
 
     int getProductsInCartCount(Long id);
 
+    Product getByProductByTitleAndCategory(String title, String categoryName);
+
 
 }

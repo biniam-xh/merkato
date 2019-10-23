@@ -1,5 +1,6 @@
 package edu.mum.mercato.controller;
 
+import edu.mum.mercato.domain.Category;
 import edu.mum.mercato.domain.Product;
 import edu.mum.mercato.domain.ProductImage;
 import edu.mum.mercato.domain.User;
@@ -31,6 +32,8 @@ public class ProductController {
     @RequestMapping(value = "/addProduct", method = RequestMethod.GET)
     public String displaySellerPanel(@ModelAttribute("newProduct") Product product, Model model){
 
+        Category category = new Category();
+        product.setCategory(category);
 
         return "product/addProductForm";
     }
@@ -40,7 +43,15 @@ public class ProductController {
     public String addProduct(@ModelAttribute("newProduct") Product product, BindingResult bindingResult,
                              HttpServletRequest request) throws IOException {
 
-              productService.saveProduct(product);
+        Product product1 = productService.getByProductByTitleAndCategory(product.getTitle(), product.getCategory().getCategoryName());
+        if (product1 != null){
+//            product1.setNumberOfCopies(product1.getNumberOfCopies() + product.getNumberOfCopies());
+            product.setNumberOfCopies(product1.getNumberOfCopies() + product.getNumberOfCopies());
+            product.setId(product1.getId());
+            productService.saveProduct(product);
+        } else {
+            productService.saveProduct(product);
+        }
 
         return "redirect:/list";
     }
