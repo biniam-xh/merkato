@@ -122,6 +122,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductItem> getSellerProductItems(Long id) {
+        return productItemRepository.findAllByProduct_SellerId(id);
+    }
+
+    @Override
     public List<ProductItem> findProductItems(Long id) {
         return productItemRepository.findByProductIdAndOrderIsNull(id);
     }
