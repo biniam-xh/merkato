@@ -36,6 +36,10 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<ProductItem> productList = new ArrayList<>();
 
+    private Address billingAddress;
+
+    private Address shippingAddress;
+
     public Order(double totalPrice, double discount, User buyer){
         this.totalPrice = totalPrice;
         this.discount = discount;
@@ -44,30 +48,5 @@ public class Order {
 
     }
 
-    public Order(double totalPrice, double discount, User buyer, List<ProductItem> productsItems) {
-    }
 
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(double discount) {
-        this.discount = discount;
-    }
-
-    public List<ProductItem> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(List<ProductItem> productList) {
-        this.productList = productList;
-    }
 }

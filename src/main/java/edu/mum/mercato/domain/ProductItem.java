@@ -1,9 +1,10 @@
 package edu.mum.mercato.domain;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -11,17 +12,24 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProductItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @JsonManagedReference
     @ManyToOne
-    @JoinColumn(name = "Product_ID")
+    @JoinColumn
     private Product product;
 
+    @JsonManagedReference
     @ManyToOne
+    @JoinColumn(name="Order_Id")
     private Order order;
+
+
+    public ProductItem(Product product){
+        this.product = product;
+    }
 
 }

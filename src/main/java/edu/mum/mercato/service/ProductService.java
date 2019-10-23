@@ -14,5 +14,7 @@ public interface ProductService {
     void deleteProduct(Product product);
 
 
+    int getProductsInCartCount(Long id);
+
 
 }

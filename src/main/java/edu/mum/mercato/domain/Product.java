@@ -1,5 +1,7 @@
 package edu.mum.mercato.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,29 +52,53 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImage> images = new ArrayList<>();
 
-//    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
-//    private ProductImage productImage;
-//    private String image;
-
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "Category_Id")
     private Category category;
+
 
     @OneToOne
     @JoinColumn(name = "Seller_Id")
     private User seller;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "product")
     private List<Review> reviewList = new ArrayList<>();
 
+    @JsonBackReference
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductItem> productItems = new ArrayList<>();
 
+    @Transient
+    private Long copiesCount;
 
+    @Transient
+    private int orderedAmount;
+
+    public List<ProductImage> getImages() {
+        return images;
+    }
+
+
+    public Product(String title, String description, double price, List<String> image_urls) {
+        this.title = title;
+        this.description = description;
+        this.discountPrice = price;
+        this.oldPrice = price - 4;
+        this.images = new ArrayList<>();
+        for(String url: image_urls){
+            this.images.add(new ProductImage(url,this));
+        }
+        this.createdDate = LocalDate.now();
+    }
 
     public void setImages(ProductImage productImage){
         this.images.add(productImage);
     }
 
 
+    public Long getCopiesCount(){
+        return getProductItems().stream().filter(productItem -> productItem.getOrder()==null).count();
+    }
 }

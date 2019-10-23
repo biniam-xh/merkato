@@ -8,8 +8,12 @@ import edu.mum.mercato.domain.User;
 import java.util.List;
 
 public interface OrderService {
-    Order getCart(User user);
-    Order addToCart(List<ProductItem> productsItems, User buyer);
+    Order getCart(Long buyerID);
+    Order addToCart(Long productId, int quantity, User buyer);
     Order completeOrder(User buyer);
     Order cancelOrder(User buyer);
+    Order findById(Long l);
+
+    void deleteItems(Long productId);
+    Long getProductAmmount(Long orderId, Long productId);
 }

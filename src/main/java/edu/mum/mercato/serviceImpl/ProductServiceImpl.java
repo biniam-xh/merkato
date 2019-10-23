@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -33,7 +34,10 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
         productRepository.findAll().forEach(products::add);
-        return products;
+        //temp filter
+        return products.stream().filter(product -> product.getCopiesCount() != 0 && product.getProductItems().stream()
+                .anyMatch(item->item.getOrder()== null))
+                .collect(Collectors.toList());
     }
 
 
@@ -105,6 +109,11 @@ public class ProductServiceImpl implements ProductService {
 
     public void deleteProduct(Product product){
         productRepository.delete(product);
+    }
+
+    @Override
+    public int getProductsInCartCount(Long id) {
+        return productItemRepository.findAllByOrderId(id).size();
     }
 
 
