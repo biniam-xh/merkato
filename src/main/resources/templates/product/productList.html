@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}" type="text/css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" th:src="@{js/product.js}" src="js/registration.js"></script>
+</head>
+<body>
+
+<h1 class="pageHeade">Welcome Shemsu!</h1>
+<div th:fragment="productList" class="container">
+    <a th:href="@{/addProduct}" class="btn btn-info">Add Product</a>
+    <h3>List of Products you posted:</h3>
+    <div id="success" style="display:none"></div>
+    <div id="errors" style="display:none"></div>
+    <table class="table table-secondary">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Price</th>
+            <th scope="col">Date Entered</th>
+            <th scope="col">Available Copies</th>
+            <th scope="col">Product Image</th>
+<!--            <th scope="col">Review</th>-->
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product, i : ${products}">
+            <th scope="row" th:text="${i.index + 1}"></th>
+            <td th:text="${product.title}"></td>
+            <td th:text="${product.category.categoryName}"></td>
+            <td th:text="${product.discountPrice}"></td>
+            <td th:text="${product.createdDate}"></td>
+            <td th:text="${product.productItems.size()}"></td>
+<!--            <td th:text="${product.images.get(0)}"></td>-->
+<!--            <td th:text="${product.images.get(0).imageURL}"></td>-->
+<!--            <td><img th:src="${product.images.get(0).imageURL}"></td>-->
+<!--            <td><img th:src="@{/product.images.get(0).image}"></td>-->
+<!--            <td><img th:src="@{/productImage?id=${product.id}}"></td>-->
+            <td><img th:src="${product.images.get(0).imageURL}" width="128" height="128"></td>
+
+<!--            <td th:text="${product.reviewList.get(0)}"></td>-->
+            <td>
+<!--                <input type="button" value="Update" class="btn-info">-->
+                <a th:href="@{'/edit/' + ${product.id}}" class="btn btn-secondary">Edit</a>&nbsp;&nbsp;
+<!--                <input type="button" value="Delete" onclick="deleteProduct();" class="btn-danger">-->
+                <a th:href="@{'/delete/' + ${product.id}}" class=" btn btn-danger">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+<!--    <img src="images/products/fikir.jpg">-->
+</div>
+
+<div th:replace="/shared/footer"></div>
+
+</body>
+</html>
