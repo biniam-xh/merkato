@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="buyer/partial/header_includes :: head">
+
+</head>
+<body>
+<header th:replace="buyer/partial/header :: navbar-default">
+</header>
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col"></div>
+        <div class="col-10">
+
+            <div class="d-flex flex-row justify-content-lg-center flex-wrap">
+
+                <div class="card m-2">
+                    <div class="card-header">
+                        <h1 style='color: green;'>Confirmation </h1>
+                    </div>
+                    <div th:if='${error}' th:text='${error}' style='color: red;' class="list-group-item"></div>
+                    <ul th:unless='${error}' class="list-group list-group-flush">
+
+                            <li class="list-group-item">Id.: <span th:text='${id}' /></li>
+                            <li class="list-group-item">Status: <span th:text='${status}' /></li>
+                            <li class="list-group-item">Charge id.: <span th:text='${chargeId}' /></li>
+                            <li class="list-group-item">Balance transaction id.: <span th:text='${balance_transaction}' /></li>
+
+                            <li class="list-group-item">
+                                <a class="btn btn-success" th:href='@{/orders}'>Orders</a>
+                            </li>
+
+
+                    </ul>
+                </div>
+
+
+
+            </div>
+
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
+
+
+<div th:replace="shared/footer :: footer">
+</div>
+
+</body>
+</html>

@@ -32,4 +32,6 @@ public class MercatoConfig {
         bean.setValidationMessageSource(messageSource);
         return bean;
     }
+
+
 }

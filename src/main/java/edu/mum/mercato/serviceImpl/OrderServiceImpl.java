@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -44,17 +46,21 @@ public class OrderServiceImpl implements OrderService {
 
             double price = productsItems.stream().map(productItem -> productItem.getProduct().getDiscountPrice()).reduce(0.0, (price1,price2)->price1+price2);
             double points = 100;
-            double totalPrice = price - points / 100;
+            double totalPrice = price;
             order.setTotalPrice(totalPrice);
             order.setDiscount(points / 100);
 
             return orderRepository.save(order);
         }
         else{
-            double totalPrice = 0.0;
-            double discount = 0.0;
-            Order updatedOrder = new Order(totalPrice,discount,buyer);
+            double price = productsItems.stream().map(productItem -> productItem.getProduct().getDiscountPrice()).reduce(0.0, (price1,price2)->price1+price2);
+            double points = 100;
+            double totalPrice = price;
+
+            Order updatedOrder = new Order(totalPrice,points / 100,buyer);
             productsItems.forEach(productItem -> productItem.setOrder(updatedOrder));
+
+
 
             return orderRepository.save(updatedOrder);
         }
@@ -62,13 +68,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order completeOrder(User buyer) {
-        return null;
+    public Order completeOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId).get();
+        order.setOrderStatus(OrderStatus.ORDERED);
+        return orderRepository.save(order);
     }
 
     @Override
-    public Order cancelOrder(User buyer) {
-        return null;
+    public Order cancelOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId).get();
+        order.setOrderStatus(OrderStatus.CANCELED);
+        return orderRepository.save(order);
     }
 
     @Override
@@ -93,6 +103,34 @@ public class OrderServiceImpl implements OrderService {
     public Long getProductAmmount(Long orderId, Long productId) {
         Order order = orderRepository.findById(orderId).get();
         return order.getProductList().stream().filter(productItem -> productItem.getProduct().getId()==productId).count();
+    }
+
+    @Override
+    public List<Order> getActiveOrders(Long userId, boolean isSeller) {
+        if(isSeller){
+           List<ProductItem> items = productService.getSellerProductItems(userId);
+           List<Order> orders = items.stream().filter(productItem -> productItem.getOrder()!=null)
+                   .map(productItem -> productItem.getOrder()).collect(Collectors.toList());
+           return orders;
+        }
+        else{
+            return orderRepository.findAllByBuyerIdAndOrderStatus(userId, OrderStatus.ORDERED);
+        }
+    }
+
+    @Override
+    public List<Order> getNonActiveOrders(Long userId, boolean isSeller) {
+        if(isSeller){
+            List<ProductItem> items = productService.getSellerProductItems(userId);
+            List<Order> orders = items.stream().filter(productItem -> productItem.getOrder()!=null)
+                    .map(productItem -> productItem.getOrder())
+                    .filter(order -> order.getOrderStatus()!=OrderStatus.ORDERED && order.getOrderStatus()!=OrderStatus.PENDING )
+                    .collect(Collectors.toList());
+            return orders;
+        }
+        else{
+            return orderRepository.findAllByBuyerIdAndOrderStatusNotIn(userId, Arrays.asList(OrderStatus.ORDERED,OrderStatus.PENDING));
+        }
     }
 
 
