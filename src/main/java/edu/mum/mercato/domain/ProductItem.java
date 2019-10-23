@@ -3,12 +3,14 @@ package edu.mum.mercato.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class ProductItem {
     @Id
@@ -25,14 +27,9 @@ public class ProductItem {
     @JoinColumn(name="Order_Id")
     private Order order;
 
-    public Product getProduct() {
-        return product;
-    }
+
     public ProductItem(Product product){
         this.product = product;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 }

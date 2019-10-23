@@ -26,8 +26,8 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public Order getCart(User buyer) {
-        return this.orderRepository.findFirstByBuyer_IdAndOrderStatus(buyer.getId(), OrderStatus.PENDING).orElse(null);
+    public Order getCart(Long id) {
+        return this.orderRepository.findFirstByBuyer_IdAndOrderStatus(id, OrderStatus.PENDING).orElse(null);
     }
 
     @Override
@@ -38,9 +38,9 @@ public class OrderServiceImpl implements OrderService {
         for(int i = 0; i<quantity; i++){
             productsItems.add(items.get(i));
         }
-        Order order = getCart(buyer);
+        Order order = getCart(buyer.getId());
         if(order != null){
-            productsItems.forEach(order.getProductList()::add);
+            productsItems.forEach(productItem -> productItem.setOrder(order));
 
             double price = productsItems.stream().map(productItem -> productItem.getProduct().getDiscountPrice()).reduce(0.0, (price1,price2)->price1+price2);
             double points = 100;
@@ -48,11 +48,6 @@ public class OrderServiceImpl implements OrderService {
             order.setTotalPrice(totalPrice);
             order.setDiscount(points / 100);
 
-            productsItems.forEach(productItem -> productItem.setOrder(order));
-            //productsItems.forEach(productItem -> productService.saveItem(productItem));
-
-            System.out.println("444444444444444444444444444444444");
-            System.out.println(order.getProductList().size());
             return orderRepository.save(order);
         }
         else{
@@ -61,8 +56,6 @@ public class OrderServiceImpl implements OrderService {
             Order updatedOrder = new Order(totalPrice,discount,buyer);
             productsItems.forEach(productItem -> productItem.setOrder(updatedOrder));
 
-            //updatedOrder.setProductList(productsItems);
-            //productsItems.forEach(productItem -> productService.saveItem(productItem));
             return orderRepository.save(updatedOrder);
         }
 
@@ -80,7 +73,26 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order findById(Long l) {
-       return orderRepository.findById(l).get();
+       return orderRepository.findById(l).orElse(null);
+    }
+
+    @Override
+    public void deleteItems(Long productId) {
+        Order order = orderRepository.findFirstByBuyer_Id(1L).orElse(null);
+        if(order!=null){
+            for(ProductItem item: order.getProductList()){
+                if(item.getProduct().getId() == productId){
+                    item.setOrder(null);
+                    productService.saveItem(item);
+                }
+            }
+        }
+    }
+
+    @Override
+    public Long getProductAmmount(Long orderId, Long productId) {
+        Order order = orderRepository.findById(orderId).get();
+        return order.getProductList().stream().filter(productItem -> productItem.getProduct().getId()==productId).count();
     }
 
 

@@ -4,4 +4,5 @@ import edu.mum.mercato.domain.User;
 
 public interface UserService {
     User save(User user);
+    User findById(Long id);
 }
