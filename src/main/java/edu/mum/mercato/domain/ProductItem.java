@@ -21,4 +21,7 @@ public class ProductItem {
     @JoinColumn(name = "Product_ID")
     private Product product;
 
+    @ManyToOne
+    private Order order;
+
 }

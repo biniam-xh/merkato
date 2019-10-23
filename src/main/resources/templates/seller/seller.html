@@ -10,14 +10,14 @@
 </head>
 <body>
 
-    <h1 class="pageHeade">Welcome Shemsu!</h1>
+<!--    <h1 class="pageHeade">Welcome Shemsu!</h1>-->
 
 <!--    <div th:replace="/product/addProductForm"></div>-->
 <!--    <button th:href="@{/addProduct}" value="Add Product"></button>-->
-    <a th:href="@{/addProduct}">Add Product</a>
-    <div th:replace="/product/productList"></div>
 
-    <div th:replace="/shared/footer"></div>
+    <div th:include="/product/productList"></div>
+
+
 
 </body>
 </html>

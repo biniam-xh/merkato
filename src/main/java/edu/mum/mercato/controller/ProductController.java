@@ -53,6 +53,34 @@ public class ProductController {
         return "product/productList";
     }
 
+    @RequestMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable(name = "id") int id) {
+
+        productService.deleteProductById(id);
+
+        return "redirect:/list";
+    }
+
+    @RequestMapping("/edit/{id}")
+    public String showEditProductPage(@PathVariable(name = "id") int id, Model model) {
+
+        Product product = productService.getProductById(id);
+        model.addAttribute("product", product);
+
+        return "product/editProduct";
+    }
+
+    @RequestMapping(value = "/editProduct", method = RequestMethod.POST)
+    public String editProduct(@ModelAttribute("product") Product product, BindingResult bindingResult) throws IOException {
+
+//        productService.deleteProduct(product);
+//        productService.deleteProductById(id);
+        productService.saveProduct(product);
+//        productService.updateProduct(product);
+
+        return "redirect:/list";
+    }
+
 //    @RequestMapping(value = { "/productImage" }, method = RequestMethod.GET)
 //    public void productImage(HttpServletRequest request, HttpServletResponse response, Model model,
 //                             @RequestParam("id") long id) throws IOException {

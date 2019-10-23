@@ -10,8 +10,12 @@
 </head>
 <body>
 
-
+<h1 class="pageHeade">Welcome Shemsu!</h1>
 <div th:fragment="productList" class="container">
+    <a th:href="@{/addProduct}" class="btn btn-info">Add Product</a>
+    <h3>List of Products you posted:</h3>
+    <div id="success" style="display:none"></div>
+    <div id="errors" style="display:none"></div>
     <table class="table table-secondary">
         <thead>
         <tr>
@@ -42,7 +46,12 @@
             <td><img th:src="${product.images.get(0).imageURL}" width="128" height="128"></td>
 
 <!--            <td th:text="${product.reviewList.get(0)}"></td>-->
-            <td><input type="button" value="Update" class="btn-info"><input type="button" value="Delete" class="btn-danger"></td>
+            <td>
+<!--                <input type="button" value="Update" class="btn-info">-->
+                <a th:href="@{'/edit/' + ${product.id}}" class="btn btn-secondary">Edit</a>&nbsp;&nbsp;
+<!--                <input type="button" value="Delete" onclick="deleteProduct();" class="btn-danger">-->
+                <a th:href="@{'/delete/' + ${product.id}}" class=" btn btn-danger">Delete</a>
+            </td>
         </tr>
         </tbody>
     </table>

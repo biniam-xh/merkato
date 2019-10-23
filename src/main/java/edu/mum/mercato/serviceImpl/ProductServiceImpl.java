@@ -98,6 +98,15 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findById(id).get();
     }
 
+    public void deleteProductById(long id){
+        Product product = productRepository.findById(id).get();
+        productRepository.delete(product);
+    }
+
+    public void deleteProduct(Product product){
+        productRepository.delete(product);
+    }
+
 
 
 }

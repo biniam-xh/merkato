@@ -1,34 +1,9 @@
 
-function saveProductData(){
+function deleteProduct(){
 
     alert("inside SaveProductData ... to add the product");
 
-    var imageData = new FormData('#productForm');
-
     var productData = JSON.stringify(serializeObject($('#productForm')));
-
-
-    $.ajax({
-        url: '/addProductImage',
-        type: 'POST',
-        enctype: 'multipart/form-data',
-        // dataType: "json",
-        data: imageData,
-        contentType: false,
-        processType: false,
-        success: function(productImageJson){
-            lert("success inside adding image");
-            productData.productImage.imageURL = productImageJson.imageURL;
-
-        },
-
-        error: function(erroObject){
-            alert("Error in uploading file");
-
-
-        }
-
-    });
 
     $.ajax({
         url: '/addProduct',
@@ -39,8 +14,7 @@ function saveProductData(){
         success: function(productObject){
             alert("inside addProduct ajax");
             $('#success').html("");
-            $("#success").append( "<H3 align='center' class='btn-success'>Your are Succesfully added a " + productObject.category.name + "<H3>");
-            $("#success").append('<h4 align="center"> <input type="button" value="CLOSE" class="btn-danger" onclick="toggle_visibility(\'success\');"></h4>');
+            $("#success").append( "<H3 align='center' class='btn-success'>Your are Succesfully deleted a product " + "<H3>");
             $('#success').show();
             $('#errors').hide();
         },
@@ -49,7 +23,7 @@ function saveProductData(){
 
             if (erroObject.responseJSON.errorType == "someErrorType") {
                 $('#errors').html("");
-                $("#errors").append( '<H3 align="center"> You provided invalid input: <H3>');
+                $("#errors").append( '<H3 align="center"> Deleting a product is not successful <H3>');
                 $("#errors").append( '<p>');
 
                 var errorList = erroObject.responseJSON.errors;

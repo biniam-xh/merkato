@@ -10,6 +10,9 @@ public interface ProductService {
     List<Product> getAllProducts();
     Product saveProduct(Product product) throws IOException;
     Product getProductById(long id);
+    void deleteProductById(long id);
+    void deleteProduct(Product product);
+
 
 
 }
