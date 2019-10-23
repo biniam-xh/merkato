@@ -96,4 +96,22 @@ public class BuyerController {
         return quantity;
     }
 
+    @GetMapping("/products/checkout")
+    public String checkout(Model model){
+        Order order = orderService.findById(1L);
+        if(order!=null){
+            List<Product> products = order.getProductList().stream()
+                    .map(productItem -> productItem.getProduct()).distinct().collect(Collectors.toList());
+            products.stream().forEach(product -> product.setOrderedAmount(Math.toIntExact(orderService.getProductAmmount(order.getId(),product.getId()))));
+            model.addAttribute("products",products);
+
+            model.addAttribute("productItems", order.getProductList());
+
+        }
+        List<ProductItem> ordredItems = orderService.getCart(1L).getProductList();
+        model.addAttribute("orderedItems",ordredItems);
+
+        return "buyer/checkout";
+    }
+
 }
