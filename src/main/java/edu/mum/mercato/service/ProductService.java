@@ -21,5 +21,10 @@ public interface ProductService {
 
     int getProductsInCartCount(Long id);
 
+
     List<ProductItem> getSellerProductItems(Long id);
+
+    Product getByProductByTitleAndCategory(String title, String categoryName);
+
+
 }
