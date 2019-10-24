@@ -25,6 +25,6 @@ public class UserController {
     @RequestMapping(value = "/seller", method = RequestMethod.GET)
     public String displaySellerPanel(@ModelAttribute("product") Product product){
 
-        return "/seller/seller";
+        return "redirect:/list";
     }
 }

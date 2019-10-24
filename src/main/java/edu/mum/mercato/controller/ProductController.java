@@ -58,7 +58,7 @@ public class ProductController {
 
     @RequestMapping("/list")
     public String displayList(Model model){
-        List<Product> products = productService.getAllProducts();
+        List<Product> products = productService.getSellerProducts();
         model.addAttribute("products", products);
 
         return "product/productList";
