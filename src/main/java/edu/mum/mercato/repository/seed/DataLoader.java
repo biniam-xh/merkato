@@ -4,6 +4,7 @@ import edu.mum.mercato.domain.*;
 import edu.mum.mercato.repository.CategoryRepository;
 import edu.mum.mercato.repository.ProductItemRepository;
 import edu.mum.mercato.repository.ProductRepository;
+import edu.mum.mercato.repository.RoleRepository;
 import edu.mum.mercato.repository.UserRepository;
 import edu.mum.mercato.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class DataLoader implements ApplicationRunner {
@@ -26,6 +28,9 @@ public class DataLoader implements ApplicationRunner {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         seedProducts();
@@ -38,9 +43,9 @@ public class DataLoader implements ApplicationRunner {
         Product p2 = new Product("Ankle Power Line2", "Lightning Cable", 15.00, images);
         Product p3 = new Product("Ankle Power Line3", "Lightning Cable", 20.00, images);
 
-        Category category = new Category();
+        Category category=new Category();
+        Optional<Role> sellerRole=roleRepository.findById(2);
         category.setCategoryName("Power Cable");
-        category.setProductList(p1);
         category.setProductList(p2);
         category.setProductList(p3);
         p1.setCategory(category);
@@ -49,8 +54,12 @@ public class DataLoader implements ApplicationRunner {
         category = categoryRepository.save(category);
 
         User seller = new User();
-        seller.setId(999);
         seller.setFirstName("BBB");
+        seller.setLastName("CCC");
+        seller.setActive(true);
+        seller.setRole(sellerRole.get());
+        seller.setEmail("seller@email.com");
+        seller.setPassword("klsolsowlo");
         seller = userRepository.save(seller);
 
         p1.setSeller(seller);

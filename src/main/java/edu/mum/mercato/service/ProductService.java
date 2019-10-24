@@ -20,6 +20,7 @@ public interface ProductService {
     void deleteProduct(Product product);
 
     int getProductsInCartCount(Long id);
+    List<Product> getUnApprovedProducts();
 
 
     List<ProductItem> getSellerProductItems(Long id);
