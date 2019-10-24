@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<h1 class="pageHeade">Welcome Shemsu!</h1>
+<h1 class="pageHeade"> Welcome <a th:href="@{/logout}" class="btn btn-outline-dark" style="margin-left: 60px;">Log out</a></h1>
 <div th:fragment="productList" class="container">
     <a th:href="@{/addProduct}" class="btn btn-info">Add Product</a>
     <h3>List of Products you posted:</h3>

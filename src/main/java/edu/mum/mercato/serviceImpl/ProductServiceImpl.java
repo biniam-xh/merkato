@@ -1,14 +1,13 @@
 package edu.mum.mercato.serviceImpl;
 
-import edu.mum.mercato.domain.Category;
-import edu.mum.mercato.domain.Product;
-import edu.mum.mercato.domain.ProductImage;
-import edu.mum.mercato.domain.ProductItem;
+import edu.mum.mercato.domain.*;
 import edu.mum.mercato.repository.CategoryRepository;
 import edu.mum.mercato.repository.ProductImageRepository;
 import edu.mum.mercato.repository.ProductItemRepository;
 import edu.mum.mercato.repository.ProductRepository;
 import edu.mum.mercato.service.ProductService;
+import edu.mum.mercato.service.SecurityService;
+import edu.mum.mercato.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +30,10 @@ public class ProductServiceImpl implements ProductService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ProductImageRepository productImageRepository;
+    @Autowired
+    private SecurityService securityService;
+    @Autowired
+    private UserService userService;
 
     @Override
     public List<Product> getAllProducts() {
@@ -45,7 +48,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product saveProduct(Product product) throws IOException {
-
+        long id=securityService.findLoggedInUser().getId();
+        User user=userService.findById(id);
+        product.setSeller(user);
 
         for (int i = 0; i < product.getNumberOfCopies(); i++) {
 
@@ -85,8 +90,8 @@ public class ProductServiceImpl implements ProductService {
             try {
 
 //                String url = "C:\\restImages\\" + productImage.getOriginalFilename();
-                String dest = "C:\\Users\\user\\Desktop\\WAA\\October 2019\\Project\\mercato\\src\\main\\resources\\static\\images\\products\\"
-                        + productImage.getOriginalFilename();
+                String dest = "C:\\Users\\handakina\\Documents\\GitHub\\merkato\\src\\main\\resources\\static\\images\\products\\"
+                                  + productImage.getOriginalFilename();
                 String url = "images\\products\\" + productImage.getOriginalFilename();
 
                 productImage.transferTo(new File(dest));
@@ -135,6 +140,13 @@ public class ProductServiceImpl implements ProductService {
                 .anyMatch(item -> item.getOrder() == null))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Product> getSellerProducts() {
+        long id=securityService.findLoggedInUser().getId();
+        return productRepository.findAllBySellerId(id);
+    }
+
     public List<ProductItem> getSellerProductItems(Long id) {
         return productItemRepository.findAllByProduct_SellerId(id);
     }
@@ -157,12 +169,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product saveProduct(Product product, int copies) {
+        long id=securityService.findLoggedInUser().getId();
+        User user=userService.findById(id);
+        product.setSeller(user);
         for (int i = 0; i < copies; i++) {
             product.getProductItems().add(new ProductItem(product));
         }
         return productRepository.save(product);
-
-
     }
 
     public Product getByProductByTitleAndCategory(String title, String categoryName){

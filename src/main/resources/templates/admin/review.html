@@ -38,19 +38,52 @@
                 </div>
             </div>
             <!-- page title area end -->
-            <div class="main-content-inner">
+            <div class="main-content-inner container">
                 <div class="row">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row" th:if="${reviewList}" th:each="reviewItem : ${reviewList}">
+                                <div class="col-md-12">
+                                    <hr>
+                                    <a class="btn btn-primary text-white" th:href="@{/admin/review/approve/{id}(id=${reviewItem.id})}">Approve</a>
+                                    <a class="btn btn-danger text-white" th:href="@{/admin/review/delete/{id}(id=${reviewItem.id})}">Delete</a>
+                                    <hr>
+                                </div>
+                                <div class="col-md-2">
+                                    <img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid"/>
+                                </div>
+                                <div class="col-md-10">
+                                    <p>
+                                        <a class="float-left" href="#" th:text="${reviewItem.fullName}"><strong>Maniruzzaman Akash</strong></a>
+                                        <span class="float-right">
 
+                                       <span class="" th:if="${reviewItem.rating >= 1}"><i class="text-warning fa fa-star"></i></span>
+                                       <span class="" th:if="${reviewItem.rating >= 2}"><i class="text-warning fa fa-star"></i></span>
+                                       <span class="" th:if="${reviewItem.rating >= 3}"><i class="text-warning fa fa-star"></i></span>
+                                       <span class="" th:if="${reviewItem.rating >= 4}"><i class="text-warning fa fa-star"></i></span>
+                                       <span class="" th:if="${reviewItem.rating >= 5}"><i class="text-warning fa fa-star"></i></span>
+
+                                       <span class="" th:if="${reviewItem.rating < 1}"><i class="text-light fa fa-star"></i></span>
+                                       <span class="" th:if="${reviewItem.rating < 2}"><i class="text-light fa fa-star"></i></span>
+                                       <span class="" th:if="${reviewItem.rating < 3}"><i class="text-light fa fa-star"></i></span>
+                                       <span class="" th:if="${reviewItem.rating < 4}"><i class="text-light fa fa-star"></i></span>
+                                       <span class="" th:if="${reviewItem.rating < 5}"><i class="text-light fa fa-star"></i></span>
+                                   </span>
+
+                                    </p>
+                                    <div class="clearfix"></div>
+                                    <p th:text="${reviewItem.content}">PageMaker including versions of Lorem Ipsum.</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- main content area end -->
         <!-- footer area start-->
-        <footer>
-            <div class="footer-area">
-                <p>© Copyright 2018. All right reserved. Template by <a href="https://colorlib.com/wp/">Colorlib</a>.</p>
-            </div>
-        </footer>
+
         <!-- footer area end-->
     </div>
     <!-- page container area end -->

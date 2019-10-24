@@ -1,10 +1,13 @@
 package edu.mum.mercato.controller;
 
+import edu.mum.mercato.Helper.ReviewStatus;
 import edu.mum.mercato.config.MerkatoUserDetails;
 import edu.mum.mercato.domain.Advert;
 import edu.mum.mercato.domain.Product;
+import edu.mum.mercato.domain.Review;
 import edu.mum.mercato.service.AdvertService;
 import edu.mum.mercato.service.ProductService;
+import edu.mum.mercato.service.ReviewService;
 import edu.mum.mercato.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +27,8 @@ public class AdminController {
     AdvertService advertService;
     @Autowired
     SecurityService securityService;
+    @Autowired
+    ReviewService reviewService;
 
     @ModelAttribute("user")
     public MerkatoUserDetails getDetails(){
@@ -76,7 +81,22 @@ public class AdminController {
     }
 
     @GetMapping("/review")
-    public String getReview(){
+    public String getReview(Model model){
+        model.addAttribute("reviewList", reviewService.getProductReviews(ReviewStatus.CREATED));
         return "admin/review";
+    }
+
+    @GetMapping("review/approve/{id}")
+    public String approveReview(@PathVariable("id") long id){
+        Review review=reviewService.findById(id);
+        review.setReviewStatus(ReviewStatus.APPROVED);
+        reviewService.save(review);
+        return "redirect:/admin/review";
+    }
+
+    @GetMapping("review/delete/{id}")
+    public String deleteReview(@PathVariable("id") long id){
+        reviewService.deleteReview(id);
+        return "redirect:/admin/review";
     }
 }

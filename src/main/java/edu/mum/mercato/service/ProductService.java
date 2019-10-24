@@ -21,6 +21,7 @@ public interface ProductService {
 
     int getProductsInCartCount(Long id);
     List<Product> getUnApprovedProducts();
+    List<Product> getSellerProducts();
 
 
     List<ProductItem> getSellerProductItems(Long id);
