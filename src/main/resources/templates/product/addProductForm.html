@@ -23,8 +23,8 @@
             <label for="productName"><b>Product Name</b></label>
             <input type="text" placeholder="Enter Product Name" name="title" th:field="*{title}" id="productName" required>
 
-            <label for="productCategory"><b>Product Name</b></label>
-            <input type="text" placeholder="Enter Product Category" name="productCategoryName" th:field="*{productCategoryName}" id="productCategory" required>
+            <label for="productCategory"><b>Category Name</b></label>
+            <input type="text" placeholder="Enter Product Category" name="category.categoryName" th:field="*{category.categoryName}" id="productCategory" required>
 
             <label for="productDesc"><b>Product Description</b></label><br>
             <textarea name="description" id="productDesc" th:field="*{description}" required></textarea><br>

@@ -40,9 +40,9 @@ public class Product {
     private LocalDate createdDate = LocalDate.now();
 
     @Column(name = "Number_OF_Copies")
-    private int numberOfCopies;
+    private long numberOfCopies;
 
-    private String productCategoryName;
+//    private String productCategoryName;
 
 
      @Transient

@@ -23,4 +23,9 @@ public interface ProductService {
     List<Product> getUnApprovedProducts();
 
 
+    List<ProductItem> getSellerProductItems(Long id);
+
+    Product getByProductByTitleAndCategory(String title, String categoryName);
+
+
 }

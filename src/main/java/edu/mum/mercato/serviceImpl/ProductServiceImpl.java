@@ -54,9 +54,14 @@ public class ProductServiceImpl implements ProductService {
             productItem.setProduct(product);
         }
         Category newCategory = new Category();
-        newCategory.setCategoryName(product.getProductCategoryName());
-        product.setCategory(newCategory);
+        newCategory = product.getCategory();
+//        newCategory.setCategoryName(product.getProductCategoryName());
+//        product.setCategory(newCategory);
         newCategory.setProductList(product);
+        Category category = categoryRepository.findByCategoryName(newCategory.getCategoryName());
+        if (category != null){
+            newCategory.setId(category.getId());
+        }
         categoryRepository.save(newCategory);
 
 //        ProductImage productImage = new ProductImage();
@@ -129,6 +134,8 @@ public class ProductServiceImpl implements ProductService {
         return products.stream().filter(product -> product.getCopiesCount() != 0 && product.getProductItems().stream()
                 .anyMatch(item -> item.getOrder() == null))
                 .collect(Collectors.toList());
+    public List<ProductItem> getSellerProductItems(Long id) {
+        return productItemRepository.findAllByProduct_SellerId(id);
     }
 
     @Override
@@ -155,6 +162,10 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(product);
 
 
+    }
+
+    public Product getByProductByTitleAndCategory(String title, String categoryName){
+        return productRepository.findByTitleAndCategory_CategoryName(title, categoryName);
     }
 
 

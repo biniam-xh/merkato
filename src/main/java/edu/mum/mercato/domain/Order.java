@@ -42,13 +42,17 @@ public class Order {
     @OneToOne
     private Address shippingAddress;
 
+
+    @OneToOne
+    private Payment payment;
+
     public Order(double totalPrice, double discount, User buyer){
         this.totalPrice = totalPrice;
         this.discount = discount;
         this.buyer = buyer;
 
-
     }
+
 
 
 }

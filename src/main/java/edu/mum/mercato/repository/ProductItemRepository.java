@@ -10,4 +10,6 @@ import java.util.List;
 public interface ProductItemRepository extends CrudRepository<ProductItem, Long> {
     List<ProductItem> findByProductIdAndOrderIsNull(Long p_id);
     List<ProductItem> findAllByOrderId(Long o_id);
+
+    List<ProductItem> findAllByProduct_SellerId(Long id);
 }

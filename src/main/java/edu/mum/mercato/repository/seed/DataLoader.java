@@ -1,6 +1,7 @@
 package edu.mum.mercato.repository.seed;
 
 import edu.mum.mercato.domain.*;
+import edu.mum.mercato.repository.CategoryRepository;
 import edu.mum.mercato.repository.ProductItemRepository;
 import edu.mum.mercato.repository.ProductRepository;
 import edu.mum.mercato.repository.RoleRepository;
@@ -24,6 +25,8 @@ public class DataLoader implements ApplicationRunner {
     private ProductItemRepository productItemRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -41,9 +44,15 @@ public class DataLoader implements ApplicationRunner {
         Product p3 = new Product("Ankle Power Line3", "Lightning Cable", 20.00, images);
 
         Optional<Role> sellerRole=roleRepository.findById(2);
+        category.setCategoryName("Power Cable");
+        category.setProductList(p2);
+        category.setProductList(p3);
+        p1.setCategory(category);
+        p2.setCategory(category);
+        p3.setCategory(category);
+        category = categoryRepository.save(category);
 
         User seller = new User();
-        seller.setId(999);
         seller.setFirstName("BBB");
         seller.setLastName("CCC");
         seller.setActive(true);
@@ -66,6 +75,9 @@ public class DataLoader implements ApplicationRunner {
             p3.getProductItems().add(new ProductItem(p3));
         }
 
+        p1.setNumberOfCopies(p1.getCopiesCount());
+        p2.setNumberOfCopies(p2.getCopiesCount());
+        p3.setNumberOfCopies(p3.getCopiesCount());
         productRepository.save(p1);
         productRepository.save(p2);
         productRepository.save(p3);

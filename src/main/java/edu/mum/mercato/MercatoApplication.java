@@ -18,4 +18,5 @@ public class MercatoApplication {
         SpringApplication.run(MercatoApplication.class, args);
     }
 
+
 }
