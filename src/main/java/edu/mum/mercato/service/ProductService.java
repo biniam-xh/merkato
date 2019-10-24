@@ -1,6 +1,7 @@
 package edu.mum.mercato.service;
 
 
+import edu.mum.mercato.config.productEvents.ProductAddEvent;
 import edu.mum.mercato.domain.Product;
 import edu.mum.mercato.domain.ProductItem;
 
@@ -25,6 +26,8 @@ public interface ProductService {
     List<ProductItem> getSellerProductItems(Long id);
 
     Product getByProductByTitleAndCategory(String title, String categoryName);
+
+    void notify(ProductAddEvent addEvent, String username);
 
 
 }

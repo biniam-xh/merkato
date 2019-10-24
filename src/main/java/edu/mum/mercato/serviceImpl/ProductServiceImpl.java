@@ -1,5 +1,6 @@
 package edu.mum.mercato.serviceImpl;
 
+import edu.mum.mercato.config.productEvents.ProductAddEvent;
 import edu.mum.mercato.domain.*;
 import edu.mum.mercato.repository.CategoryRepository;
 import edu.mum.mercato.repository.ProductImageRepository;
@@ -7,6 +8,8 @@ import edu.mum.mercato.repository.ProductItemRepository;
 import edu.mum.mercato.repository.ProductRepository;
 import edu.mum.mercato.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +32,10 @@ public class ProductServiceImpl implements ProductService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ProductImageRepository productImageRepository;
+    @Autowired
+    private ApplicationEventPublisher publisher;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @Override
     public List<Product> getAllProducts() {
@@ -100,6 +107,9 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
+        //notifying add product
+        publisher.publishEvent(new ProductAddEvent(product.getTitle()));
+
         return productRepository.save(product);
     }
 
@@ -155,6 +165,17 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findByTitleAndCategory_CategoryName(title, categoryName);
     }
 
+    public void notify(ProductAddEvent addEvent, String username) {
+//        System.out.println("In Service 1");
+
+        messagingTemplate.convertAndSendToUser(
+                username,
+                "/queue/notify",
+                addEvent
+        );
+//        System.out.println("In Service 2");
+        return;
+    }
 
 
 }
