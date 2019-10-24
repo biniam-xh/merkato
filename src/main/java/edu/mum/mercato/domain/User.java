@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,6 +39,8 @@ public class User {
     @Column(name = "Active")
     private boolean active;
 
+    @OneToMany
+    private List<User> followers;
 
     @OneToOne
     @Valid

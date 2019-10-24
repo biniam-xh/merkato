@@ -43,6 +43,7 @@ public class DataLoader implements ApplicationRunner {
         Product p2 = new Product("Ankle Power Line2", "Lightning Cable", 15.00, images);
         Product p3 = new Product("Ankle Power Line3", "Lightning Cable", 20.00, images);
 
+        Category category=new Category();
         Optional<Role> sellerRole=roleRepository.findById(2);
         category.setCategoryName("Power Cable");
         category.setProductList(p2);

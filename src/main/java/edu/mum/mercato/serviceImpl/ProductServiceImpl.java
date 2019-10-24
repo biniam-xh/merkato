@@ -134,6 +134,7 @@ public class ProductServiceImpl implements ProductService {
         return products.stream().filter(product -> product.getCopiesCount() != 0 && product.getProductItems().stream()
                 .anyMatch(item -> item.getOrder() == null))
                 .collect(Collectors.toList());
+    }
     public List<ProductItem> getSellerProductItems(Long id) {
         return productItemRepository.findAllByProduct_SellerId(id);
     }

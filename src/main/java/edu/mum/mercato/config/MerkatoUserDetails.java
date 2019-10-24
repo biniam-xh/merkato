@@ -46,6 +46,10 @@ public class MerkatoUserDetails implements UserDetails {
         return id;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
     public String getFirstName() {
         return firstName;
     }

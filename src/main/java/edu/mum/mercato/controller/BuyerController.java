@@ -3,14 +3,13 @@ package edu.mum.mercato.controller;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import edu.mum.mercato.Helper.OrderStatus;
+import edu.mum.mercato.config.MerkatoUserDetails;
 import edu.mum.mercato.domain.*;
 import edu.mum.mercato.domain.view_models.CartItem;
 import edu.mum.mercato.domain.view_models.CartModalView;
 import edu.mum.mercato.domain.view_models.ChargeRequest;
 import edu.mum.mercato.domain.view_models.OrderViewModel;
-import edu.mum.mercato.service.OrderService;
-import edu.mum.mercato.service.ProductService;
-import edu.mum.mercato.service.UserService;
+import edu.mum.mercato.service.*;
 import edu.mum.mercato.serviceImpl.ProductServiceImpl;
 import edu.mum.mercato.serviceImpl.StripeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,18 +37,24 @@ public class BuyerController {
     OrderService orderService;
 
     @Autowired
-    SecurityService  securityService;
+    SecurityService securityService;
 
     @Autowired
     AdvertService advertService;
+    @Autowired
     private StripeService paymentsService;
+
+
+    @ModelAttribute("user")
+    public MerkatoUserDetails getDetails(){
+        return securityService.findLoggedInUser();
+    }
 
 
     @Autowired
     UserService userService;
     @GetMapping("/products")
     public String productListing(Model model){
-        model.addAttribute("user",securityService.findLoggedInUser());
         model.addAttribute("products", productService.getAllProducts() );
         Order order = orderService.getCart(1L);
         if(order!=null){
