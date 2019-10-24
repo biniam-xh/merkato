@@ -34,7 +34,7 @@
         <tr th:each="product, i : ${products}">
             <th scope="row" th:text="${i.index + 1}"></th>
             <td th:text="${product.title}"></td>
-            <td th:text="${product.category.categoryName}"></td>
+<!--            <td th:text="${product.category.categoryName}"></td>-->
             <td th:text="${product.discountPrice}"></td>
             <td th:text="${product.createdDate}"></td>
             <td th:text="${product.productItems.size()}"></td>

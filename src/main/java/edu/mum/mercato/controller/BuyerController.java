@@ -4,21 +4,25 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import edu.mum.mercato.Helper.OrderStatus;
 import edu.mum.mercato.Helper.ReviewStatus;
+import edu.mum.mercato.config.MerkatoUserDetails;
 import edu.mum.mercato.domain.*;
 import edu.mum.mercato.domain.view_models.CartItem;
 import edu.mum.mercato.domain.view_models.CartModalView;
 import edu.mum.mercato.domain.view_models.ChargeRequest;
 import edu.mum.mercato.domain.view_models.OrderViewModel;
+
 import edu.mum.mercato.service.OrderService;
 import edu.mum.mercato.service.ProductService;
 import edu.mum.mercato.service.ReviewService;
 import edu.mum.mercato.service.UserService;
+
 import edu.mum.mercato.serviceImpl.ProductServiceImpl;
 import edu.mum.mercato.serviceImpl.StripeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +43,19 @@ public class BuyerController {
     OrderService orderService;
 
     @Autowired
+    SecurityService securityService;
+
+    @Autowired
+    AdvertService advertService;
+    @Autowired
     private StripeService paymentsService;
+
+
+    @ModelAttribute("user")
+    public MerkatoUserDetails getDetails(){
+        return securityService.findLoggedInUser();
+    }
+
 
     @Autowired
     UserService userService;
@@ -56,6 +72,11 @@ public class BuyerController {
             model.addAttribute("productItems", order.getProductList());
             System.out.println("");
         }
+
+        Advert advert=advertService.findOneAdvert();
+        System.out.println(advert);
+        model.addAttribute("advert",advert);
+
 
         return "buyer/product_list";
     }
