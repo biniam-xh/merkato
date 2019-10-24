@@ -45,6 +45,8 @@ public class MerkatoSpringSecurityConfiguration extends WebSecurityConfigurerAda
                 .antMatchers("/", "/login", "/register", "/h2-console/**").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/seller/**").hasAuthority("SELLER")
+                .antMatchers("/list/**").hasAuthority("SELLER")
+                .antMatchers("/addProduct").hasAuthority("SELLER")
                 .and()
                 .formLogin()
                 .loginPage("/login")

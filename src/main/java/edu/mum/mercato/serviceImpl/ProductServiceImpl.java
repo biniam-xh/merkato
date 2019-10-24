@@ -85,8 +85,8 @@ public class ProductServiceImpl implements ProductService {
             try {
 
 //                String url = "C:\\restImages\\" + productImage.getOriginalFilename();
-                String dest = "C:\\Users\\user\\Desktop\\WAA\\October 2019\\Project\\mercato\\src\\main\\resources\\static\\images\\products\\"
-                        + productImage.getOriginalFilename();
+                String dest = "C:\\Users\\handakina\\Documents\\GitHub\\merkato\\src\\main\\resources\\static\\images\\products\\"
+                                  + productImage.getOriginalFilename();
                 String url = "images\\products\\" + productImage.getOriginalFilename();
 
                 productImage.transferTo(new File(dest));
