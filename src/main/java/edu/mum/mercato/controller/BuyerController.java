@@ -201,6 +201,8 @@ public class BuyerController {
 
         orderService.changeStatus(orderId, OrderStatus.ORDERED);
         Order order = orderService.findById(orderId);
+        order.setTotalPrice(order.getTotalPrice() - order.getDiscount());
+        orderService.saveOrder(order);
 
         //update coupon
         Coupon coupon = couponService.getCoupon(order.getBuyer().getId());

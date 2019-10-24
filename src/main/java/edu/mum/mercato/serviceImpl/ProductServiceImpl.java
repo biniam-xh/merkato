@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
         productRepository.findAll().forEach(products::add);
         //temp filter
         return products.stream().filter(product -> product.getCopiesCount() != 0 && product.getProductItems().stream()
-                .anyMatch(item -> item.getOrder() == null))
+                .anyMatch(item -> item.getOrder() == null)).filter(product -> product.isApproved())
                 .collect(Collectors.toList());
     }
 

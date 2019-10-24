@@ -81,9 +81,7 @@ public class OrderServiceImpl implements OrderService {
     public Order changeStatus(Long orderId, Enum e) {
         Order order = orderRepository.findById(orderId).get();
         order.setOrderStatus(e);
-        if(e != OrderStatus.ORDERED){
-            order.setTotalPrice(order.getTotalPrice() - order.getDiscount());
-        }
+
         return orderRepository.save(order);
     }
 
@@ -119,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
         if(isSeller){
            List<ProductItem> items = productService.getSellerProductItems(userId);
            List<Order> orders = items.stream().filter(productItem -> productItem.getOrder()!=null)
-                   .map(productItem -> productItem.getOrder()).collect(Collectors.toList());
+                   .map(productItem -> productItem.getOrder()).distinct().collect(Collectors.toList());
            return orders;
         }
         else{
@@ -134,6 +132,7 @@ public class OrderServiceImpl implements OrderService {
             List<Order> orders = items.stream().filter(productItem -> productItem.getOrder()!=null)
                     .map(productItem -> productItem.getOrder())
                     .filter(order -> order.getOrderStatus()!=OrderStatus.ORDERED && order.getOrderStatus()!=OrderStatus.PENDING )
+                    .distinct()
                     .collect(Collectors.toList());
             return orders;
         }
