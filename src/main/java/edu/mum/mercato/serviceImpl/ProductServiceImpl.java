@@ -2,6 +2,10 @@ package edu.mum.mercato.serviceImpl;
 
 import edu.mum.mercato.config.productEvents.ProductAddEvent;
 import edu.mum.mercato.domain.*;
+import edu.mum.mercato.domain.Category;
+import edu.mum.mercato.domain.Product;
+import edu.mum.mercato.domain.ProductImage;
+import edu.mum.mercato.domain.ProductItem;
 import edu.mum.mercato.repository.CategoryRepository;
 import edu.mum.mercato.repository.ProductImageRepository;
 import edu.mum.mercato.repository.ProductItemRepository;
@@ -43,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
         productRepository.findAll().forEach(products::add);
         //temp filter
         return products.stream().filter(product -> product.getCopiesCount() != 0 && product.getProductItems().stream()
-                .anyMatch(item->item.getOrder()== null))
+                .anyMatch(item -> item.getOrder() == null))
                 .collect(Collectors.toList());
     }
 
@@ -52,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
     public Product saveProduct(Product product) throws IOException {
 
 
-        for(int i=0; i < product.getNumberOfCopies(); i++){
+        for (int i = 0; i < product.getNumberOfCopies(); i++) {
 
             ProductItem productItem = new ProductItem();
             product.getProductItems().add(productItem);
@@ -85,13 +89,13 @@ public class ProductServiceImpl implements ProductService {
 //
 //            }
 //        }
-        MultipartFile productImage= product.getImageData();
-        if(productImage != null && !productImage.isEmpty()) {
-            try{
+        MultipartFile productImage = product.getImageData();
+        if (productImage != null && !productImage.isEmpty()) {
+            try {
 
 //                String url = "C:\\restImages\\" + productImage.getOriginalFilename();
                 String dest = "C:\\Users\\user\\Desktop\\WAA\\October 2019\\Project\\mercato\\src\\main\\resources\\static\\images\\products\\"
-                + productImage.getOriginalFilename();
+                        + productImage.getOriginalFilename();
                 String url = "images\\products\\" + productImage.getOriginalFilename();
 
                 productImage.transferTo(new File(dest));
@@ -102,7 +106,7 @@ public class ProductServiceImpl implements ProductService {
                 productImageOb.setProduct(product);
                 productImageRepository.save(productImageOb);
 
-            } catch(Exception e) {
+            } catch (Exception e) {
 //                throw new RuntimeException("Product Image saving failed", e);
             }
         }
@@ -113,16 +117,16 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(product);
     }
 
-    public Product getProductById(long id){
+    public Product getProductById(long id) {
         return productRepository.findById(id).get();
     }
 
-    public void deleteProductById(long id){
+    public void deleteProductById(long id) {
         Product product = productRepository.findById(id).get();
         productRepository.delete(product);
     }
 
-    public void deleteProduct(Product product){
+    public void deleteProduct(Product product) {
         productRepository.delete(product);
     }
 
@@ -132,6 +136,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getUnApprovedProducts() {
+        List<Product> products = new ArrayList<>();
+        productRepository.findAll().forEach(prd -> {
+            if (!prd.isApproved())
+                products.add(prd);
+        });
+        //temp filter
+        return products.stream().filter(product -> product.getCopiesCount() != 0 && product.getProductItems().stream()
+                .anyMatch(item -> item.getOrder() == null))
+                .collect(Collectors.toList());
+    }
     public List<ProductItem> getSellerProductItems(Long id) {
         return productItemRepository.findAllByProduct_SellerId(id);
     }
@@ -140,6 +155,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductItem> findProductItems(Long id) {
         return productItemRepository.findByProductIdAndOrderIsNull(id);
     }
+
     @Override
     public ProductItem saveItem(ProductItem p) {
         return productItemRepository.save(p);
@@ -153,7 +169,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product saveProduct(Product product, int copies) {
-        for(int i=0; i<copies; i++){
+        for (int i = 0; i < copies; i++) {
             product.getProductItems().add(new ProductItem(product));
         }
         return productRepository.save(product);

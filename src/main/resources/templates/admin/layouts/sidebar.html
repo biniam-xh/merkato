@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="sidebar-menu" th:fragment="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">
+            <a href="index.html"><img src="../images/icon/logo.png" alt="logo"></a>
+        </div>
+    </div>
+    <div class="main-menu">
+        <div class="menu-inner">
+            <nav>
+                <ul class="metismenu" id="menu">
+                    <li class="active">
+                        <a href="#"  th:href="@{/admin}"  aria-expanded="true"><i class="ti-dashboard"></i><span>Dashboard</span></a>
+                    </li>
+                    <li>
+                        <a href="#" th:href="@{/admin/seller}" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span> Sellers </span></a>
+                    </li>
+                    <li>
+                        <a href="#" th:href="@{/admin/ads}"  aria-expanded="true"><i class="ti-pie-chart"></i><span>Ads</span></a>
+                    </li>
+                    <li>
+                        <a href="#" th:href="@{/admin/review}"  aria-expanded="true"><i class="ti-pie-chart"></i><span>Reviews</span></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+</html>

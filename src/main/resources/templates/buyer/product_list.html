@@ -10,7 +10,6 @@
 
 <div class="container">
     <div class="row">
-        <div class="col"></div>
         <div class="col-10">
             <div class="d-flex flex-row justify-content-between flex-wrap">
                 <!-- Card Regular -->
@@ -236,7 +235,19 @@
             </div>
 
         </div>
+        <div class="col-lg-2 col-md-3 mt-5" th:if="${advert}">
+            <div class="card card-bordered" th:object="${advert}">
+                <img class="card-img-top img-fluid" th:src="*{imageUrl.imageURL}" alt="image">
+                <div class="card-body">
+                    <h5 class="title" th:text="*{title}">title</h5>
+                    <p class="card-text" th:text="*{content}">
+                    </p>
+                    <a href="#" class="btn btn-primary" target="_blank" th:href="*{link}">More....</a>
+                </div>
+            </div>
         <div class="col"></div>
+        </div>
+
     </div>
 </div>
 
