@@ -3,6 +3,7 @@ package edu.mum.mercato.controller;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import edu.mum.mercato.Helper.OrderStatus;
+import edu.mum.mercato.Helper.ReviewStatus;
 import edu.mum.mercato.config.MerkatoUserDetails;
 import edu.mum.mercato.domain.*;
 import edu.mum.mercato.domain.view_models.CartItem;
@@ -269,14 +270,15 @@ public class BuyerController {
             review.setFullName("test user");
         }
         model.addAttribute("review", review);
-        model.addAttribute("reviewList", reviewService.getProductReviews(productId));
+        model.addAttribute("reviewList", reviewService.getProductReviews(productId, ReviewStatus.APPROVED));
         return "buyer/reviews";
     }
 
     @PostMapping("/products/review/add")
     public String addReviewForm(@ModelAttribute("review") Review review){
+            review.setProduct(productService.getProductById(review.getProduct().getId()));
             reviewService.save(review);
-            return "buyer/addReview";
+            return "redirect:/products/review/"+review.getProduct().getId();
     }
 
 }

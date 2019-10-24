@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ReviewRepository extends CrudRepository<Review, Long> {
     List<Review> findAllByProductId(Long id);
+    List<Review> findAllByProductIdAndReviewStatus(Long id,Enum e);
 }
