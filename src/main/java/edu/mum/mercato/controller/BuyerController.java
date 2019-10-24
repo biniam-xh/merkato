@@ -47,6 +47,9 @@ public class BuyerController {
     @Autowired
     private StripeService paymentsService;
 
+    @Autowired
+    CouponService couponService;
+
 
     @ModelAttribute("user")
     public MerkatoUserDetails getDetails(){
@@ -64,10 +67,15 @@ public class BuyerController {
     @GetMapping("/products")
     public String productListing(Model model){
         model.addAttribute("products", productService.getAllProducts() );
-        Order order = orderService.getCart(1L);
-        if(order!=null){
-            model.addAttribute("productItems", order.getProductList());
-            System.out.println("");
+
+        MerkatoUserDetails userDetails = securityService.findLoggedInUser();
+
+        if(userDetails!=null){
+            Order order = orderService.getCart(userDetails.getId());
+            if(order!=null){
+                model.addAttribute("productItems", order.getProductList());
+                System.out.println("");
+            }
         }
 
         Advert advert=advertService.findOneAdvert();
@@ -84,7 +92,10 @@ public class BuyerController {
     @PostMapping("/products/addtocart")
     public @ResponseBody int addToCart(@RequestBody CartItem item){
           //test user
-          User buyer = userService.findById(1L);
+
+        MerkatoUserDetails userDetails = securityService.findLoggedInUser();
+
+          User buyer = userService.findById(userDetails.getId());
           if(buyer==null)buyer = new User(); userService.save(buyer);
 
           Order order = orderService.addToCart(item.getProduct_id(),item.getQuantity(), buyer);
@@ -96,12 +107,14 @@ public class BuyerController {
     }
     @GetMapping("/products/test")
     public @ResponseBody List<ProductItem> test(){
+
         return orderService.findById(1L).getProductList();
     }
 
     @GetMapping("/products/cart")
     public String cart(Model model){
-        Order order = orderService.getCart(1L);
+        MerkatoUserDetails userDetails = securityService.findLoggedInUser();
+        Order order = orderService.getCart(userDetails.getId());
         if(order!=null){
             List<Product> products = order.getProductList().stream()
                     .map(productItem -> productItem.getProduct()).distinct().collect(Collectors.toList());
@@ -124,7 +137,8 @@ public class BuyerController {
     @PutMapping(value= "/products/editcart/{product_id}/{selected}")
     public @ResponseBody int editcart(@PathVariable("product_id") long product_id, @PathVariable("selected") int quantity){
         //test user
-        User buyer = userService.findById(1L);
+        MerkatoUserDetails userDetails = securityService.findLoggedInUser();
+        User buyer = userService.findById(userDetails.getId());
         if(buyer==null)buyer = new User(); userService.save(buyer);
 
         orderService.deleteItems(product_id);
@@ -140,7 +154,8 @@ public class BuyerController {
 
     @GetMapping("/products/checkout")
     public String checkout(Model model){
-        Order order = orderService.getCart(1L);
+        MerkatoUserDetails userDetails = securityService.findLoggedInUser();
+        Order order = orderService.getCart(userDetails.getId());
         if(order!=null){
             List<Product> products = order.getProductList().stream()
                     .map(productItem -> productItem.getProduct()).distinct().collect(Collectors.toList());
@@ -160,11 +175,14 @@ public class BuyerController {
         return "buyer/checkout";
     }
 
-    @GetMapping("/checkout/billing")
+    @GetMapping("/products/checkout/billing")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void makePayment(@RequestParam("billingAddress") Address billingAddress,@RequestParam("orderId") Long orderId, Model model){
-        orderService.findById(orderId).setBillingAddress(billingAddress);
-        System.out.println("address");
+    public void makePayment(@RequestParam Address billingAddress, @RequestParam Address shippingAddress, @RequestParam Long orderId, Model model){
+        Order order = orderService.findById(orderId);
+        order.setBillingAddress(billingAddress);
+        order.setBillingAddress(shippingAddress);
+        System.out.println(billingAddress);
+        System.out.println(shippingAddress);
     }
 
     @PostMapping("/charge")
@@ -180,6 +198,11 @@ public class BuyerController {
 
         orderService.changeStatus(orderId, OrderStatus.ORDERED);
         Order order = orderService.findById(orderId);
+
+        //update coupon
+        Coupon coupon = couponService.getCoupon(order.getBuyer().getId());
+        coupon.setPoint(coupon.getPoint() + (100 * order.getProductList().size()));
+        couponService.save(coupon);
 
         Payment payment = new Payment(charge.getStatus(),charge.getId(),charge.getBalanceTransaction());
 
@@ -211,11 +234,14 @@ public class BuyerController {
     public List<OrderViewModel> getViewModels(boolean isCurrent){
         List<Order> orders = new ArrayList<>();
         List<OrderViewModel> orderViewModels = new ArrayList<>();
+
+        MerkatoUserDetails userDetails = securityService.findLoggedInUser();
+
         if(isCurrent){
-            orders = orderService.getActiveOrders(1L,false);
+            orders = orderService.getActiveOrders(userDetails.getId(),false);
         }
         else{
-            orders = orderService.getNonActiveOrders(1L,false);
+            orders = orderService.getNonActiveOrders(userDetails.getId(),false);
         }
         for(Order order: orders){
             List<Product> products = order.getProductList().stream()

@@ -1,9 +1,11 @@
 package edu.mum.mercato.serviceImpl;
 
+import edu.mum.mercato.domain.Coupon;
 import edu.mum.mercato.domain.User;
 import edu.mum.mercato.exception.NotFoundException;
 
 import edu.mum.mercato.repository.UserRepository;
+import edu.mum.mercato.service.CouponService;
 import edu.mum.mercato.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +23,9 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 //    @Autowired
 //    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    CouponService couponService;
 
     @Override
     public User findUserByEmail(String email) {
@@ -41,7 +46,11 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
 //        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 //        System.out.println(user);
-        return userRepository.save(user);
+        User updatedUser = userRepository.save(user);
+        Coupon coupon = new Coupon();
+        coupon.setBuyer(updatedUser);
+        couponService.save(coupon);
+        return updatedUser;
 
     }
 

@@ -86,35 +86,91 @@ $(document).ready(function() {
         alert(orderStatus)
     });
 
-    $("#complete-order").click(function (event) {
-        order_id = $("#orderId").attr("data");
-        address = $("#address").val();
+    $("#complete-order").prop("disabled",true);
 
-        var forms = document.getElementsByClassName('needs-validation');
+    function occurrences(string, substring){
+        var n=0;
+        var pos=0;
 
-        // Loop over them and prevent submission
-        if (forms.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
+        while(true){
+            pos=string.indexOf(substring,pos);
+            if(pos!=-1){ n++; pos+=substring.length;}
+            else{break;}
         }
-        forms.classList.add('was-validated');
+        return(n);
+    }
+    isSameAddress = false;
+
+    $(".address").change(function () {
+        address = $("#address").val();
+        address2 = $("#address2").val();
+
+        var count = occurrences(address,",");
+        var count2 = occurrences(address2,",");
+
+        if(count >= 2 && isSameAddress || (count >= 2 && count2 >= 2)){
+            $("#invalid-feedback").hide();
+            $("#invalid-feedback2").hide();
+            $("#complete-order").prop("disabled",false);
+        }
+
+        else{
+            if(count<2){
+                $("#invalid-feedback").show();
+            }
+            if(count2 < 2 && !isSameAddress){
+                $("#invalid-feedback2").show();
+            }
+
+            $("#complete-order").prop("disabled",true);
+
+        }
+    });
+
+
+
+    $("#same-address").change(function() {
+        // this will contain a reference to the checkbox
+        if (this.checked) {
+            //$("#address").val($("#address").val())
+            $("#billingAddressContainer").addClass("d-none");
+            $("#billingAddressContainer").removeClass("d-block");
+            isSameAddress = true;
+        } else {
+            //$("#address").val('')
+            $("#billingAddressContainer").removeClass("d-none");
+            $("#billingAddressContainer").addClass("d-block");
+            isSameAddress = false;
+        }
+
+    });
+
+    $("#complete-order").click(function (event) {
+        alert("test")
+
+        order_id = $("#orderId").val();
+        address = $("#address").val();
+        if(isSameAddress){
+            address2 = address;
+        }
+        else{
+            address2 = $("#address2").val();
+        }
 
         var contextRoot = "/" + window.location.pathname.split('/')[1];
         $.ajax({
-                url: contextRoot+"/checkout/billingAddress?billingAddress="+ address +"&order_id="+order_id,
+                url: contextRoot+ "/checkout/billing?billingAddress="+ address2 + "&shippingAddress="+address+"&orderId="+order_id,
                 contentType: 'application/json',
                 dataType: 'json',
-                type: "put",
+                type: "get",
                 success: function(data){
-                    alert('test');
+                    console.log(data)
                 },
                 error: function (error) {
                     console.log('error========================================')
                     console.log(error);
-
                 }
             }
-
         );
 
     });

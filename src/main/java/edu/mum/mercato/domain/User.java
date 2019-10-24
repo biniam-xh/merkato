@@ -46,6 +46,9 @@ public class User {
     @Valid
     private Role role;
 
+    @Transient
+    private Address address;
+
 //    @Transient
 //    private boolean isFollowing;
 //
