@@ -15,7 +15,7 @@ public class Review {
     private long id;
     private String fullName;
     private String content;
-    private int ratings;
+    private int rating;
     @ManyToOne
     @JoinColumn(name = "Product_Id")
     private Product product;

@@ -26,7 +26,9 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<Review> getProductReviews(Long id) {
-        return reviewRepository.findAllByProductId(id);
+    public List<Review> getProductReviews(Long id, Enum e) {
+        return reviewRepository.findAllByProductIdAAndReviewStatus(id, e);
     }
+
+
 }
