@@ -65,9 +65,12 @@ public class ProductController {
 
     @RequestMapping("/list")
     public String displayList(Model model){
-        List<Product> products = productService.getAllProducts();
+//        List<Product> products = productService.getAllProducts();
+
+
         MerkatoUserDetails mud = securityService.findLoggedInUser();
         String nameOfUser = mud.getFirstName();
+        List<Product> products = productService.getAllProductsBySeller(mud.getId());
 
         model.addAttribute("products", products);
         model.addAttribute("userFirstName", nameOfUser);

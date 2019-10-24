@@ -1,5 +1,6 @@
 package edu.mum.mercato.serviceImpl;
 
+import edu.mum.mercato.config.MerkatoUserDetails;
 import edu.mum.mercato.config.productEvents.ProductAddEvent;
 import edu.mum.mercato.domain.*;
 import edu.mum.mercato.domain.Category;
@@ -11,6 +12,7 @@ import edu.mum.mercato.repository.ProductImageRepository;
 import edu.mum.mercato.repository.ProductItemRepository;
 import edu.mum.mercato.repository.ProductRepository;
 import edu.mum.mercato.service.ProductService;
+import edu.mum.mercato.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -40,6 +42,8 @@ public class ProductServiceImpl implements ProductService {
     private ApplicationEventPublisher publisher;
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
+    @Autowired
+    private SecurityService securityService;
 
     @Override
     public List<Product> getAllProducts() {
@@ -111,8 +115,14 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
-        //notifying add product
-        publisher.publishEvent(new ProductAddEvent(product.getTitle()));
+//        //notifying add product
+//        publisher.publishEvent(new ProductAddEvent(product.getTitle()));
+
+        MerkatoUserDetails mud = securityService.findLoggedInUser();
+        User user = new User();
+        user.setId(mud.getId());
+
+        product.setSeller(user);
 
         return productRepository.save(product);
     }
@@ -191,6 +201,11 @@ public class ProductServiceImpl implements ProductService {
         );
 //        System.out.println("In Service 2");
         return;
+    }
+
+    public List<Product> getAllProductsBySeller(long id){
+//        return (List<Product>) productRepository.findAllBySeller(id);
+        return (List<Product>) productRepository.findAllBySeller_Id(id);
     }
 
 

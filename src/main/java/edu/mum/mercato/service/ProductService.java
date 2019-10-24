@@ -30,5 +30,7 @@ public interface ProductService {
 
     void notify(ProductAddEvent addEvent, String username);
 
+    List<Product> getAllProductsBySeller(long id);
+
 
 }

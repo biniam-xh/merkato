@@ -5,9 +5,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
 
 //    @Query(value = "SELECT * FROM Product WHERE title =?")
     Product findByTitleAndCategory_CategoryName(String title, String categoryName);
+
+//    @Query(value = "SELECT * FROM Product WHERE seller =?0", nativeQuery = true)
+//    List<Product> findAllBySeller(long id);
+
+    List<Product> findAllBySeller_Id(long id);
 }
