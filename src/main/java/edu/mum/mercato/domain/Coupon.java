@@ -1,9 +1,14 @@
 package edu.mum.mercato.domain;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 public class Coupon {
 
     @Id
@@ -12,5 +17,5 @@ public class Coupon {
     @OneToOne
     @JoinColumn(name = "User_Id")
     private User buyer;
-    private int point = 0;
+    private int point = 100;
 }
