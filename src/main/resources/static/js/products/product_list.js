@@ -130,5 +130,42 @@ $(document).ready(function() {
         window.location.href = contextRoot + "/cancelOrder?orderId="+order_id;
     });
 
+    $
+
+    $("form#ratingForm").submit(function(e)
+    {
+        e.preventDefault(); // prevent the default click action from being performed
+        if ($("#ratingForm :radio:checked").length == 0) {
+            $('#status').html("nothing checked");
+            return false;
+        } else {
+            $('#status').html( 'You picked ' + $('input:radio[name=rating]:checked').val() );
+        }
+    });
+
+    $(".add-review").click(function(e){
+        e.preventDefault();
+        var contextRoot = "/" + window.location.pathname.split('/')[1];
+        $.ajax({
+                url: contextRoot+"/addtocart",
+                contentType: 'application/json',
+                dataType: 'json',
+                type: "post",
+                data: JSON.stringify($("form#ratingForm").serialize()),
+                success: function(data){
+                    console.log(data);
+
+                },
+                error: function (error) {
+                    console.log('error========================================')
+                    console.log(error);
+
+                }
+            }
+
+        );
+    });
+
+
 
 });
