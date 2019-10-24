@@ -76,6 +76,9 @@ public class Product {
     @Transient
     private int orderedAmount;
 
+    @Transient
+    private int ratingsAvg;
+
     public List<ProductImage> getImages() {
         return images;
     }
@@ -100,5 +103,13 @@ public class Product {
 
     public Long getCopiesCount(){
         return getProductItems().stream().filter(productItem -> productItem.getOrder()==null).count();
+    }
+    public int getRatingsAvg(){
+        if(!getReviewList().isEmpty()){
+            int r =  getReviewList().stream().map(review -> review.getRating()).reduce(0,(a,b)->a+b);
+            return r / getReviewList().size();
+        }
+        return 0;
+
     }
 }

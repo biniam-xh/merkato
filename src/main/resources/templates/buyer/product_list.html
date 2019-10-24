@@ -105,7 +105,22 @@
                                             <!--/.Carousel Wrapper-->
 
                                             <div>
-                                                <a th:href="@{'/products/review/add/' + ${product.Id}}">User Reviews</a>
+                                                <br>
+                                                <span class="float-right">
+
+                                                   <span class="" th:if="${product.ratingsAvg >= 1}"><i class="text-warning fa fa-star"></i></span>
+                                                   <span class="" th:if="${product.ratingsAvg >= 2}"><i class="text-warning fa fa-star"></i></span>
+                                                   <span class="" th:if="${product.ratingsAvg >= 3}"><i class="text-warning fa fa-star"></i></span>
+                                                   <span class="" th:if="${product.ratingsAvg >= 4}"><i class="text-warning fa fa-star"></i></span>
+                                                   <span class="" th:if="${product.ratingsAvg >= 5}"><i class="text-warning fa fa-star"></i></span>
+
+                                                   <span class="" th:if="${product.ratingsAvg < 1}"><i class="text-light fa fa-star"></i></span>
+                                                   <span class="" th:if="${product.ratingsAvg < 2}"><i class="text-light fa fa-star"></i></span>
+                                                   <span class="" th:if="${product.ratingsAvg < 3}"><i class="text-light fa fa-star"></i></span>
+                                                   <span class="" th:if="${product.ratingsAvg < 4}"><i class="text-light fa fa-star"></i></span>
+                                                   <span class="" th:if="${product.ratingsAvg < 5}"><i class="text-light fa fa-star"></i></span>
+                                               </span>
+                                                <a class="text-center" th:href="@{'/products/review/' + ${product.Id}}" th:text="${product.reviewList.size()}+' User Reviews'">User Reviews</a>
                                             </div>
                                         </div>
                                         <div class="col-lg-7">
