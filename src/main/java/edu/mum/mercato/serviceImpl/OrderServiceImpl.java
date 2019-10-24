@@ -81,8 +81,8 @@ public class OrderServiceImpl implements OrderService {
     public Order changeStatus(Long orderId, Enum e) {
         Order order = orderRepository.findById(orderId).get();
         order.setOrderStatus(e);
-        if(e == OrderStatus.ORDERED){
-            order.setTotalPrice(order.getTotalPrice() - order.getTotalPrice());
+        if(e != OrderStatus.ORDERED){
+            order.setTotalPrice(order.getTotalPrice() - order.getDiscount());
         }
         return orderRepository.save(order);
     }

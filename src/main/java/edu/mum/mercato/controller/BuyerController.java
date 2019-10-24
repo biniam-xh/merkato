@@ -177,10 +177,13 @@ public class BuyerController {
 
     @GetMapping("/products/checkout/billing")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void makePayment(@RequestParam Address billingAddress, @RequestParam Address shippingAddress, @RequestParam Long orderId, Model model){
+    public void updateOrderAddresses(@RequestParam Address billingAddress, @RequestParam Address shippingAddress, @RequestParam Long orderId, Model model){
         Order order = orderService.findById(orderId);
         order.setBillingAddress(billingAddress);
         order.setBillingAddress(shippingAddress);
+
+        orderService.saveOrder(order);
+
         System.out.println(billingAddress);
         System.out.println(shippingAddress);
     }
@@ -237,17 +240,23 @@ public class BuyerController {
 
         MerkatoUserDetails userDetails = securityService.findLoggedInUser();
 
+        boolean isSeller = false;
+        if(userDetails.getRole().getId() == 2){
+            isSeller = true;
+        }
+
         if(isCurrent){
-            orders = orderService.getActiveOrders(userDetails.getId(),false);
+            orders = orderService.getActiveOrders(userDetails.getId(),isSeller);
         }
         else{
-            orders = orderService.getNonActiveOrders(userDetails.getId(),false);
+            orders = orderService.getNonActiveOrders(userDetails.getId(),isSeller);
         }
         for(Order order: orders){
             List<Product> products = order.getProductList().stream()
                     .map(productItem -> productItem.getProduct()).distinct().collect(Collectors.toList());
             products.stream().forEach(product -> product.setOrderedAmount(Math.toIntExact(orderService.getProductAmmount(order.getId(),product.getId()))));
-            orderViewModels.add(new OrderViewModel(order,products));
+            Coupon coupon = couponService.getCoupon(order.getBuyer().getId());
+            orderViewModels.add(new OrderViewModel(order,products,coupon,isSeller));
         }
         return orderViewModels;
     }
@@ -307,6 +316,23 @@ public class BuyerController {
             review.setProduct(productService.getProductById(review.getProduct().getId()));
             reviewService.save(review);
             return "redirect:/products/review/"+review.getProduct().getId();
+    }
+
+    @GetMapping("/orders/changeStatus")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void changeOrderStatus(@RequestParam int status, @RequestParam Long orderId, Model model){
+        switch (status){
+            case 1:
+                orderService.changeStatus(orderId,OrderStatus.ORDERED);
+                break;
+            case 2:
+                orderService.changeStatus(orderId,OrderStatus.SHIPPED);
+                break;
+            case 3:
+                orderService.changeStatus(orderId,OrderStatus.DELIVERED);
+                break;
+        }
+
     }
 
 }

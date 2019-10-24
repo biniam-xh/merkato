@@ -81,9 +81,40 @@ $(document).ready(function() {
     });
 
     var orderStatus = 1;
+    showOptions = false;
+    if(!showOptions){
+        $(".select-status").hide();
+    }
+    $(".changeStatusBtn").click(function () {
+
+        showOptions = !showOptions;
+        if(!showOptions){
+            $(".select-status").hide();
+        }
+        else {
+            $(".select-status").show();
+        }
+    });
     $(".select-status").change(function () {
         orderStatus = $(this).val();
-        alert(orderStatus)
+
+        order_id = $(this).attr("data");
+
+        var contextRoot = "/" + window.location.pathname.split('/')[1];
+        $.ajax({
+                url:"/orders/changeStatus?orderId="+order_id+"&status="+orderStatus,
+                type: "get",
+                success: function(data){
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.log('error========================================')
+                    console.log(error);
+                    window.location.reload();
+                }
+            }
+        );
+
     });
 
     $("#complete-order").prop("disabled",true);
@@ -146,7 +177,7 @@ $(document).ready(function() {
     });
 
     $("#complete-order").click(function (event) {
-        alert("test")
+
 
         order_id = $("#orderId").val();
         address = $("#address").val();
@@ -186,24 +217,13 @@ $(document).ready(function() {
         window.location.href = contextRoot + "/cancelOrder?orderId="+order_id;
     });
 
-    $
 
-    // $("form#ratingForm").submit(function(e)
-    // {
-    //     e.preventDefault(); // prevent the default click action from being performed
-    //     if ($("#ratingForm :radio:checked").length == 0) {
-    //         $('#status').html("nothing checked");
-    //         return false;
-    //     } else {
-    //         $('#status').html( 'You picked ' + $('input:radio[name=rating]:checked').val() );
-    //     }
-    // });
 
     $("#add-review").click(function(e){
         e.preventDefault();
         console.log(JSON.stringify( $("#ratingForm").serialize() ));
 
-        alert("sd")
+
         $.ajax({
                 url: "/products/review/add",
                 contentType: 'application/json',
