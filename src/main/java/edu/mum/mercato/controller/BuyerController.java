@@ -11,10 +11,7 @@ import edu.mum.mercato.domain.view_models.CartModalView;
 import edu.mum.mercato.domain.view_models.ChargeRequest;
 import edu.mum.mercato.domain.view_models.OrderViewModel;
 
-import edu.mum.mercato.service.OrderService;
-import edu.mum.mercato.service.ProductService;
-import edu.mum.mercato.service.ReviewService;
-import edu.mum.mercato.service.UserService;
+import edu.mum.mercato.service.*;
 
 import edu.mum.mercato.serviceImpl.ProductServiceImpl;
 import edu.mum.mercato.serviceImpl.StripeService;
@@ -76,6 +73,10 @@ public class BuyerController {
         Advert advert=advertService.findOneAdvert();
         System.out.println(advert);
         model.addAttribute("advert",advert);
+
+        if(securityService.findLoggedInUser()!=null){
+            model.addAttribute("currentUser",userService.findById(securityService.findLoggedInUser().getId()));
+        }
 
 
         return "buyer/product_list";
@@ -231,10 +232,11 @@ public class BuyerController {
         return "result";
     }
 
-    @GetMapping(value= "/products/user/follow/{user_id}")
+    @PutMapping(value= "/products/user/follow/{user_id}")
     public @ResponseBody int follow(@PathVariable("user_id") long user_id){
-        //test user
-        User currentUser = userService.findById(user_id);
+
+        MerkatoUserDetails userDetails = securityService.findLoggedInUser();
+        User currentUser = userService.findById(userDetails.getId());
         User user = userService.findById(user_id);
         user.getFollowers().add(currentUser);
         userService.save(user);
@@ -243,10 +245,10 @@ public class BuyerController {
         return 1;
     }
 
-    @GetMapping(value= "/products/user/unfollow/{user_id}")
+    @PutMapping(value= "/products/user/unfollow/{user_id}")
     public @ResponseBody int unfollow(@PathVariable("user_id") long user_id){
-        //test user
-        User currentUser = userService.findById(user_id);
+        MerkatoUserDetails userDetails = securityService.findLoggedInUser();
+        User currentUser = userService.findById(userDetails.getId());
         User user = userService.findById(user_id);
         user.getFollowers().remove(currentUser);
         userService.save(user);

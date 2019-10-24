@@ -169,5 +169,53 @@ $(document).ready(function() {
     });
 
 
+    $(".follow").click(function(){
+        user_id = $("#userId").attr("data");
+        btnId = $(this).attr("data");
+
+        $.ajax({
+                url: "/products/user/follow/"+user_id,
+                contentType: 'application/json',
+                dataType: 'json',
+                type: "put",
+                success: function(data){
+                    console.log(data);
+                    $(".follow"+btnId).addClass('d-none');
+                    $(".follow"+btnId).removeClass('d-inline-block');
+                    $(".unfollow"+btnId).addClass('d-inline-block');
+                },
+                error: function (error) {
+                    console.log('error========================================')
+                    console.log(error);
+                }
+            }
+        );
+    });
+
+
+    $(".unfollow").click(function(){
+        user_id = $("#userId").attr("data");
+        btnId = $(this).attr("data");
+
+        $.ajax({
+                url: "/products/user/unfollow/"+user_id,
+                contentType: 'application/json',
+                dataType: 'json',
+                type: "put",
+                success: function(data){
+                    console.log(data);
+                    $(".follow"+btnId).addClass('d-inline-block');
+                    $(".unfollow"+btnId).addClass('d-none');
+                    $(".unfollow"+btnId).removeClass('d-inline-block')
+                },
+                error: function (error) {
+                    console.log('error========================================')
+                    console.log(error);
+                }
+            }
+        );
+    });
+
+
 
 });

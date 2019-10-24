@@ -46,4 +46,10 @@ public class User {
     @Valid
     private Role role;
 
+//    @Transient
+//    private boolean isFollowing;
+//
+//    public boolean getIsFollowing(){
+//
+//    }
 }

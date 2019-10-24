@@ -90,5 +90,8 @@
 #ratingForm{
     width: 100% !important;
 }
+.removeBtn{
+    display: none;!important;
+}
 
 
