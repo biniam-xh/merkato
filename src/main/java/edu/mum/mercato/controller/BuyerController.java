@@ -10,6 +10,7 @@ import edu.mum.mercato.domain.view_models.ChargeRequest;
 import edu.mum.mercato.domain.view_models.OrderViewModel;
 import edu.mum.mercato.service.OrderService;
 import edu.mum.mercato.service.ProductService;
+import edu.mum.mercato.service.ReviewService;
 import edu.mum.mercato.service.UserService;
 import edu.mum.mercato.serviceImpl.ProductServiceImpl;
 import edu.mum.mercato.serviceImpl.StripeService;
@@ -39,9 +40,13 @@ public class BuyerController {
     @Autowired
     private StripeService paymentsService;
 
-
     @Autowired
     UserService userService;
+
+    @Autowired
+    ReviewService reviewService;
+
+
     @GetMapping("/products")
     public String productListing(Model model){
         model.addAttribute("products", productService.getAllProducts() );
@@ -232,6 +237,25 @@ public class BuyerController {
     public String cancelOrder(@RequestParam("orderId") Long orderId, Model model){
         orderService.changeStatus(orderId, OrderStatus.CANCELED);
         return "redirect:/orderHistory";
+    }
+
+    @GetMapping("/products/review/{productId}")
+    public String getReviews(@PathVariable("productId") Long productId, Model model){
+        Review review = new Review();
+        Product product = productService.getProductById(productId);
+        if(product!=null){
+            review.setProduct(product);
+            review.setFullName("test user");
+        }
+        model.addAttribute("review", review);
+        model.addAttribute("reviewList", reviewService.getProductReviews(productId));
+        return "buyer/reviews";
+    }
+
+    @PostMapping("/products/review/add")
+    public String addReviewForm(@ModelAttribute("review") Review review){
+            reviewService.save(review);
+            return "buyer/addReview";
     }
 
 }
