@@ -1,8 +1,10 @@
 package edu.mum.mercato.serviceImpl;
 
+import edu.mum.mercato.domain.Role;
 import edu.mum.mercato.domain.User;
 import edu.mum.mercato.exception.NotFoundException;
 
+import edu.mum.mercato.repository.RoleRepository;
 import edu.mum.mercato.repository.UserRepository;
 import edu.mum.mercato.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 //    @Autowired
 //    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -41,6 +45,29 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
 //        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 //        System.out.println(user);
+
+        Role role = new Role();
+
+        String roleType = user.getRoleName();
+        if(roleType.equals("SELLER")){
+            role = roleRepository.getByRole("SELLER");
+//            user.getRole().setId(role.getId());
+            user.setRole(role);
+        }
+        else if (roleType.equals("BUYER")){
+            role = roleRepository.getByRole("BUYER");
+//            user.getRole().setId(role.getId());
+            user.setRole(role);
+        }
+        else {
+            role = roleRepository.getByRole("ADMIN");
+//            user.getRole().setId(role.getId());
+            user.setRole(role);
+
+        }
+
+        user.setActive(true);
+
         return userRepository.save(user);
 
     }

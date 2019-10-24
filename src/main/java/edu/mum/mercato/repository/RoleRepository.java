@@ -10,4 +10,6 @@ public interface RoleRepository extends CrudRepository<Role,Integer> {
 
     @Query("select r from Role r where r.role=:role")
     public Optional<Role> getRoleByName(String role);
+
+    Role getByRole(String role);
 }

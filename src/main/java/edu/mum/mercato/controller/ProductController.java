@@ -1,11 +1,13 @@
 package edu.mum.mercato.controller;
 
+import edu.mum.mercato.config.MerkatoUserDetails;
 import edu.mum.mercato.config.productEvents.ProductAddEvent;
 import edu.mum.mercato.domain.Category;
 import edu.mum.mercato.domain.Product;
 import edu.mum.mercato.domain.ProductImage;
 import edu.mum.mercato.domain.User;
 import edu.mum.mercato.service.ProductService;
+import edu.mum.mercato.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,8 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private SecurityService securityService;
 
     @RequestMapping(value = "/addProduct", method = RequestMethod.GET)
     public String displaySellerPanel(@ModelAttribute("newProduct") Product product, Model model){
@@ -62,7 +66,11 @@ public class ProductController {
     @RequestMapping("/list")
     public String displayList(Model model){
         List<Product> products = productService.getAllProducts();
+        MerkatoUserDetails mud = securityService.findLoggedInUser();
+        String nameOfUser = mud.getFirstName();
+
         model.addAttribute("products", products);
+        model.addAttribute("userFirstName", nameOfUser);
 
         return "product/productList";
     }

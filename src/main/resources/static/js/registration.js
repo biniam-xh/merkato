@@ -12,11 +12,11 @@ function saveUserData(){
         success: function(userObject){
             $('#success').html("");
             $("#success").append( '<H3 align="center" class="btn-success">Your are Succesfully registered! <H3>');
-            $('#success').append("<H4 align='center'>First Name:  " + userObject.firstName + "</h4>"  );
-            $('#success').append("<H4 align='center'>Last Name: " + userObject.lastName  + "</h4>" );
-            $('#success').append("<H4 align='center'>Email: " + userObject.email  + "</h4>");
-            $('#success').append("<H4 align='center'>Registered as: " + userObject.role  + "</h4>");
-            $("#success").append('<h4 align="center"> <input type="button" value="CLOSE" class="btn-danger" onclick="toggle_visibility(\'success\');"></h4>');
+            // $('#success').append("<H4 align='center'>First Name:  " + userObject.firstName + "</h4>"  );
+            // $('#success').append("<H4 align='center'>Last Name: " + userObject.lastName  + "</h4>" );
+            // $('#success').append("<H4 align='center'>Email: " + userObject.email  + "</h4>");
+            // $('#success').append("<H4 align='center'>Registered as: " + userObject.role  + "</h4>");
+            // $("#success").append('<h4 align="center"> <input type="button" value="CLOSE" class="btn-danger" onclick="toggle_visibility(\'success\');"></h4>');
             $('#success').show();
             $('#errors').hide();
         },
@@ -36,7 +36,8 @@ function saveUserData(){
                 $('#errors').show();
             }
             else {
-                alert(erroObject.responseJSON.message);
+                // alert(erroObject.responseJSON.message);
+                alert("something went wrong!")
             }
         }
 

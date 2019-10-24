@@ -18,13 +18,13 @@ public class UserController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public @ResponseBody User addUser(@Valid @RequestBody User user){
-            userService.save(user);
-        return user;
+
+        return userService.save(user);
     }
 
     @RequestMapping(value = "/seller", method = RequestMethod.GET)
     public String displaySellerPanel(@ModelAttribute("product") Product product){
 
-        return "/seller/seller";
+        return "seller/seller";
     }
 }

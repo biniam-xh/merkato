@@ -10,10 +10,7 @@ import edu.mum.mercato.domain.view_models.CartModalView;
 import edu.mum.mercato.domain.view_models.ChargeRequest;
 import edu.mum.mercato.domain.view_models.OrderViewModel;
 
-import edu.mum.mercato.service.OrderService;
-import edu.mum.mercato.service.ProductService;
-import edu.mum.mercato.service.ReviewService;
-import edu.mum.mercato.service.UserService;
+import edu.mum.mercato.service.*;
 
 import edu.mum.mercato.serviceImpl.ProductServiceImpl;
 import edu.mum.mercato.serviceImpl.StripeService;
