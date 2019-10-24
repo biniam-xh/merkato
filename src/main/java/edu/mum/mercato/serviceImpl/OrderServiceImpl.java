@@ -1,12 +1,16 @@
 package edu.mum.mercato.serviceImpl;
 
 import edu.mum.mercato.Helper.OrderStatus;
+import edu.mum.mercato.config.MerkatoUserDetails;
 import edu.mum.mercato.domain.*;
+import edu.mum.mercato.repository.CouponRepository;
 import edu.mum.mercato.repository.OrderRepository;
 import edu.mum.mercato.repository.PaymentRepository;
 import edu.mum.mercato.repository.ProductRepository;
+import edu.mum.mercato.service.CouponService;
 import edu.mum.mercato.service.OrderService;
 import edu.mum.mercato.service.ProductService;
+import edu.mum.mercato.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +31,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     PaymentRepository paymentRepository;
 
+    @Autowired
+    CouponService couponService;
+
+    @Autowired
+    SecurityService securityService;
+
     @Override
     public Order getCart(Long id) {
         return this.orderRepository.findFirstByBuyer_IdAndOrderStatus(id, OrderStatus.PENDING).orElse(null);
@@ -45,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
             productsItems.forEach(productItem -> productItem.setOrder(order));
 
             double price = productsItems.stream().map(productItem -> productItem.getProduct().getDiscountPrice()).reduce(0.0, (price1,price2)->price1+price2);
-            double points = 100;
+            double points = couponService.getCoupon(buyer.getId()).getPoint();
             double totalPrice = price;
             order.setTotalPrice(totalPrice);
             order.setDiscount(points / 100);
@@ -54,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
         }
         else{
             double price = productsItems.stream().map(productItem -> productItem.getProduct().getDiscountPrice()).reduce(0.0, (price1,price2)->price1+price2);
-            double points = 100;
+            double points = couponService.getCoupon(buyer.getId()).getPoint();
             double totalPrice = price;
 
             Order updatedOrder = new Order(totalPrice,points / 100,buyer);
@@ -71,6 +81,9 @@ public class OrderServiceImpl implements OrderService {
     public Order changeStatus(Long orderId, Enum e) {
         Order order = orderRepository.findById(orderId).get();
         order.setOrderStatus(e);
+        if(e != OrderStatus.ORDERED){
+            order.setTotalPrice(order.getTotalPrice() - order.getDiscount());
+        }
         return orderRepository.save(order);
     }
 
@@ -82,6 +95,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteItems(Long productId) {
+        MerkatoUserDetails userDetails = securityService.findLoggedInUser();
+
         Order order = orderRepository.findFirstByBuyer_Id(1L).orElse(null);
         if(order!=null){
             for(ProductItem item: order.getProductList()){

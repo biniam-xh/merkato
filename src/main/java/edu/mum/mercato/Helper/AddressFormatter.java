@@ -26,14 +26,23 @@ public class AddressFormatter implements Formatter<Address> {
                 address.setZipCode(parts[2].trim());
                 address.setState(parts[3].trim());
                 return address;
-            } else if (style == Style.REGION && parts.length == 3) {
+            } else if (parts.length == 3) {
                 Address address = new Address();
                 address.setStreet(parts[0].trim());
                 address.setCity(parts[1].trim());
                 address.setZipCode(parts[2].trim());
 
                 return address;
+            }else if (parts.length == 2) {
+                Address address = new Address();
+                address.setStreet(parts[0].trim());
+                address.setCity(parts[1].trim());
+
+
+                return address;
             }
+
+
         }
         return null;
     }

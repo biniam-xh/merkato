@@ -36,10 +36,10 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<ProductItem> productList = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address billingAddress;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address shippingAddress;
 
 

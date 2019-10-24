@@ -22,14 +22,19 @@
                         <h5 class="card-title" >
                             <span class="text-success" th:text="'Status: '+ ${orderView.order.orderStatus}">Ordered</span>
                             <span class="float-right" th:if="${isCurrent}">
-                                <span>Change Status </span>
-                                <select class="md-form mdb-select colorful-select dropdown-primary select-status " >
-                                    <option value="0">Ordered</option>
-                                    <option value="1">Shipped</option>
-                                    <option value="2">Delivered</option>
+
+                                <button type="button" th:if="${orderView.isSeller}" class="btn btn-light changeStatusBtn">Change Status</button>
+                                <select th:if="${orderView.isSeller}" class="md-form mdb-select colorful-select dropdown-primary select-status " th:data="${orderView.order.Id}">
+                                    <option value="1">Ordered</option>
+                                    <option value="2">Shipped</option>
+                                    <option value="3">Delivered</option>
                                 </select>
                             </span>
                         </h5>
+                        <p th:text="${orderView.order.shippingAddress}">
+                        </p>
+                        <p th:text="'Reward Points:'+ ${orderView.coupon.point}">
+                        </p>
 
                         <div th:if="${orderView.productList}" th:each="product : ${orderView.productList}" class="card-text float-left m-1">
                             <p><strong th:text="${product.title}"></strong></p>
@@ -48,7 +53,7 @@
                     </div>
                     <div class="card-footer bg-transparent border-success" >
                        <span th:text="${orderView.order.totalPrice}"></span>
-                       <span th:text="'Gained points: '"></span>
+
                         <script th:inline="javascript">
                             /*<![CDATA[*/
                             var status = /*[[${orderView.order.payment.chargeId}]]*/ 'default';

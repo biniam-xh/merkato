@@ -40,7 +40,7 @@
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total (USD)</span>
-                    <strong th:text="${order.totalPrice}">$20</strong>
+                    <strong th:text="${order.totalPrice - order.discount}">$20</strong>
                 </li>
             </ul>
 
@@ -53,14 +53,22 @@
                 </div>
 
                 <div class="m-5">
-                    <h4 class="mb-3">Shipping address</h4>
+                    <h4 class="mb-3"></h4>
                     <form class="needs-validation" novalidate th:action="@{/checkout/payment}" th:object="${order}">
 
                         <div class="mb-3">
-                            <label for="address">Address</label>
-                            <input th:field="*{billingAddress}" type="text" class="form-control" id="address" placeholder="City , ZipCode, State" required>
-                            <div class="invalid-feedback">
+                            <label for="address">Shipping Address</label>
+                            <input th:field="*{shippingAddress}" type="text" class="form-control address" id="address" placeholder="City , ZipCode, State" required>
+                            <div class="invalid-feedback" id="invalid-feedback">
                                 Please enter your shipping address.
+                            </div>
+                        </div>
+
+                        <div class="mb-3" id="billingAddressContainer">
+                            <label for="address">Billing Address</label>
+                            <input th:field="*{billingAddress}" type="text" class="form-control address" id="address2" placeholder="City , ZipCode, State" required>
+                            <div class="invalid-feedback" id="invalid-feedback2">
+                                Please enter your billing address.
                             </div>
                         </div>
 
@@ -77,6 +85,7 @@
                     <form action='/charge' method='POST' id='checkout-form'>
                         <input type='hidden' th:value='${amount}' name='amount' />
                         <input type='hidden' th:value='${order.Id}' name='orderId' id="orderId"/>
+<!--                        <input type='hidden' th:if="${order.buyer}" th:value='${order.buyer.address}' name='buyerAddress' id="buyerAddress"/>-->
                         <label>Price:<span th:text='${amount/100}' /></label>
                         <!-- NOTE: data-key/data-amount/data-currency will be rendered by Thymeleaf -->
                         <script
@@ -130,8 +139,8 @@
             var validation = Array.prototype.filter.call(forms, function(form) {
                 form.addEventListener('submit', function(event) {
                     if (form.checkValidity() === false) {
-                        //event.preventDefault();
-                        //event.stopPropagation();
+                        event.preventDefault();
+                        event.stopPropagation();
                     }
                     form.classList.add('was-validated');
                 }, false);

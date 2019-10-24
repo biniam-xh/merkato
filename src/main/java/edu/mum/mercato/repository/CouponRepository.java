@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CouponRepository extends CrudRepository<Coupon, Long> {
+    Coupon findFirstByBuyer_Id(Long id);
 }
