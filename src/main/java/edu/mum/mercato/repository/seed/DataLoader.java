@@ -51,6 +51,9 @@ public class DataLoader implements ApplicationRunner {
         p1.setCategory(category);
         p2.setCategory(category);
         p3.setCategory(category);
+        p1.setApproved(true);
+        p2.setApproved(true);
+        p3.setApproved(true);
         category = categoryRepository.save(category);
 
         User seller = new User();
@@ -59,7 +62,7 @@ public class DataLoader implements ApplicationRunner {
         seller.setActive(true);
         seller.setRole(sellerRole.get());
         seller.setEmail("seller@email.com");
-        seller.setPassword("klsolsowlo");
+        seller.setPassword("seller");
         seller = userRepository.save(seller);
 
         p1.setSeller(seller);
