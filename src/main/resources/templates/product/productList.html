@@ -5,12 +5,21 @@
     <title>Product List</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/main.css}" type="text/css">
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    <script type="text/javascript" th:src="@{js/product.js}" src="js/registration.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script th:src="@{js/products/sockjs-0.3.4.min.js}"></script>
+    <script th:src="@{js/products/stomp.min.js}"></script>
+    <script type="text/javascript" th:src="@{js/products/product.js}" src="js/registration.js"></script>
+<!--    <script th:src="@{js/products/displaynotification.js}"></script>-->
+<!--    <script th:src="@{js/products/notify.js}"></script>-->
 </head>
 <body>
 
-<h1 class="pageHeade">Welcome Shemsu!</h1>
+<h1 class="pageHeade">Welcome: <span th:text="${userFirstName}">Welcome Shemsu!</span></h1>
+<!--<div style="float: right">-->
+<!--<textarea id="notifications" cols="60" rows="10" readonly="readonly"></textarea>-->
+<!--</div>-->
+<!--<input id="notifyUserAddProduct" type="button" value="Click me" />-->
+
 <div th:fragment="productList" class="container">
     <a th:href="@{/addProduct}" class="btn btn-info">Add Product</a>
     <h3>List of Products you posted:</h3>
@@ -59,6 +68,47 @@
 </div>
 
 <div th:replace="/shared/footer"></div>
+
+<!--<script>-->
+<!--    function connect() {-->
+<!--        // alert("In display motifications js 2");-->
+
+
+<!--        var socket = new SockJS('/ws');-->
+<!--        var stompClient = Stomp.over(socket);-->
+
+<!--        // alert("In display motifications js 3");-->
+
+
+<!--        stompClient.connect({}, function(frame) {-->
+<!--            // alert("In display motifications js 4");-->
+<!--            $('#notifications').append("Abebe beso bela\n");-->
+
+<!--            stompClient.subscribe('/user/queue/notify', function(notification) {-->
+<!--                alert("In display motifications js 5");-->
+
+
+<!--                notify(JSON.parse(notification.body).content);-->
+<!--                alert("In display motifications js 6");-->
+
+<!--            });-->
+<!--        });-->
+
+<!--        return;-->
+<!--    }-->
+
+
+<!--    function notify(message) {-->
+<!--        $('#notifications').append(message + "\n");-->
+<!--        return;-->
+<!--    }-->
+
+<!--    $(document).ready(function() {-->
+<!--        // alert("In display motifications js 1");-->
+<!--        connect();-->
+
+<!--    });-->
+<!--</script>-->
 
 </body>
 </html>

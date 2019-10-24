@@ -1,22 +1,20 @@
 
-function saveUserData(){
+function deleteProduct(){
 
-    var userData = JSON.stringify(serializeObject($('#userForm')));
+    alert("inside SaveProductData ... to add the product");
+
+    var productData = JSON.stringify(serializeObject($('#productForm')));
 
     $.ajax({
-        url: '/add',
+        url: '/addProduct',
         type: 'POST',
-        dataType: "json",
-        data: userData,
+        dataType: 'json',
+        data: productData,
         contentType: 'application/json',
-        success: function(userObject){
+        success: function(productObject){
+            alert("inside addProduct ajax");
             $('#success').html("");
-            $("#success").append( '<H3 align="center" class="btn-success">Your are Succesfully registered! <H3>');
-            // $('#success').append("<H4 align='center'>First Name:  " + userObject.firstName + "</h4>"  );
-            // $('#success').append("<H4 align='center'>Last Name: " + userObject.lastName  + "</h4>" );
-            // $('#success').append("<H4 align='center'>Email: " + userObject.email  + "</h4>");
-            // $('#success').append("<H4 align='center'>Registered as: " + userObject.role  + "</h4>");
-            // $("#success").append('<h4 align="center"> <input type="button" value="CLOSE" class="btn-danger" onclick="toggle_visibility(\'success\');"></h4>');
+            $("#success").append( "<H3 align='center' class='btn-success'>Your are Succesfully deleted a product " + "<H3>");
             $('#success').show();
             $('#errors').hide();
         },
@@ -25,7 +23,7 @@ function saveUserData(){
 
             if (erroObject.responseJSON.errorType == "someErrorType") {
                 $('#errors').html("");
-                $("#errors").append( '<H3 align="center"> You provided invalid input: <H3>');
+                $("#errors").append( '<H3 align="center"> Deleting a product is not successful <H3>');
                 $("#errors").append( '<p>');
 
                 var errorList = erroObject.responseJSON.errors;
@@ -37,7 +35,7 @@ function saveUserData(){
             }
             else {
                 // alert(erroObject.responseJSON.message);
-                alert("something went wrong!")
+                alert("I think error has happened!");
             }
         }
 
@@ -46,7 +44,7 @@ function saveUserData(){
 
 toggle_visibility = function(id) {
     var e = document.getElementById(id);
-    resetForm('userForm');
+    resetForm('productForm');
     if(e.style.display == 'block')
         e.style.display = 'none';
     else

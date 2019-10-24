@@ -43,7 +43,10 @@ public class User {
     private List<User> followers;
 
     @OneToOne
-    @Valid
+    @JoinColumn(name = "Role_Id")
     private Role role;
+
+    @Transient
+    private String roleName;
 
 }
